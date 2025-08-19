@@ -1,0 +1,169 @@
+{
+    "name": "flash-mintlify",
+    "displayName": "FlashMintlify",
+    "description": "The ultimate VS Code extension for Mintlify documentation development with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.",
+    "version": "1.0.1",
+    "publisher": "FlashDocs",
+    "private": true,
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/flash-docs/flash-mintlify"
+    },
+    "engines": {
+        "vscode": "^1.73.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Snippets",
+        "Formatters",
+        "Notebooks"
+    ],
+    "keywords": [
+        "Mintlify",
+        "MDX",
+        "markdown",
+        "documentation",
+        "components",
+        "autocomplete",
+        "snippets",
+        "link-validation",
+        "file-tracking",
+        "reference-management",
+        "codelens",
+        "language-service",
+        "docs",
+        "technical-writing"
+    ],
+    "pricing": "Free",
+    "icon": "logo.png",
+    "activationEvents": [
+        "onLanguage:markdown",
+        "onLanguage:mdx",
+        "onLanguage:yaml",
+        "onLanguage:yml",
+        "onLanguage:json"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "FlashMintlify",
+            "properties": {
+                "flashMintlify.enableLanguageService": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable FlashMintlify Language Service for file reference analysis and intelligent features"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "flashMintlify.basic.frontmatter",
+                "title": "Insert frontmatter",
+                "category": "FlashMintlify Basic"
+            },
+            {
+                "command": "flashMintlify.basic.calculateimport",
+                "title": "Calculate import references",
+                "category": "FlashMintlify Basic"
+            },
+
+
+            {
+                "command": "flashMintlify.explorer.copyInternalLink",
+                "title": "Copy internal link",
+                "category": "FlashMintlify Explorer"
+            },
+            {
+                "command": "flashMintlify.explorer.copyImport",
+                "title": "Copy import command",
+                "category": "FlashMintlify Explorer"
+            },
+            {
+                "command": "flashMintlify.analyzeReferences",
+                "title": "Analyze References",
+                "category": "FlashMintlify Language Service"
+            },
+            {
+                "command": "flashMintlify.reloadLanguageService",
+                "title": "Reload Language Service",
+                "category": "FlashMintlify Language Service"
+            },
+            {
+                "command": "flashMintlify.handleFolderRename",
+                "title": "Handle Folder Rename",
+                "category": "FlashMintlify Language Service"
+            },
+            {
+                "command": "flashMintlify.testLanguageService",
+                "title": "Test Language Service",
+                "category": "FlashMintlify Language Service"
+            }
+        ],
+
+        "submenus": [
+            {
+                "id": "flashMintlify.basic",
+                "label": "FlashMintlify"
+            },
+            {
+                "id": "flashMintlify.explorer",
+                "label": "FlashMintlify"
+            }
+        ],
+        "menus": {
+
+            "explorer/context": [
+                {
+                    "submenu": "flashMintlify.explorer",
+                    "group": "1_modification"
+                }
+            ],
+            "editor/context": [
+                {
+                    "submenu": "flashMintlify.basic",
+                    "when": "resourceLangId == markdown || resourceLangId == mdx",
+                    "group": "1_modification"
+                }
+            ],
+            "flashMintlify.basic": [
+                {
+                    "command": "flashMintlify.basic.frontmatter"
+                },
+
+                {
+                    "command": "flashMintlify.basic.calculateimport"
+                }
+            ],
+            "flashMintlify.explorer": [
+
+                {
+                    "command": "flashMintlify.explorer.copyInternalLink"
+                },
+                {
+                    "command": "flashMintlify.explorer.copyImport"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc --skipLibCheck -p ./ && npm run copy-resources",
+        "lint": "eslint \"src/**/*.ts\"",
+        "watch": "tsc --skipLibCheck -watch -p ./",
+        "copy-resources": "copyfiles 'resources/**' out/",
+        "publish": "npm run compile && vsce publish"
+    },
+    "devDependencies": {
+        "@types/node": "^16.18.34",
+        "@types/vscode": "^1.73.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
+        "copyfiles": "^2.4.1",
+        "eslint": "^8.26.0",
+        "typescript": "^5.3.2"
+    },
+    "dependencies": {
+        "csv-parse": "^5.5.6"
+    }
+}
