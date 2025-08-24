@@ -15,11 +15,11 @@ You don't need to remember all the rules!
 
 You only need to type "<" to trigger the component completion.
 
-![components_completion](images/components_completion.gif)
+![components_completion](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/components_completion.gif)
 
 You only need to type "```" to trigger the code block completion.
 
-![code_block_completion](images/code_block_completion.gif)
+![code_block_completion](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/code_block_completion.gif)
 
 
 ### 🔗 Smart Link Management & Validation
@@ -31,8 +31,8 @@ Real-time link validation and automatic updates:
 - **Status Bar Indicators**: Real-time count of invalid links in current file
 - **Auto-Resolution**: Automatically tries `.mdx`, `.md`, `index.mdx`, `index.md` extensions
 
-![invalid_internal_link](images/invalid_internal_link.gif)
-![invalid_absolute_link](images/invalid_absolute_link.gif)
+![invalid_internal_link](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/invalid_internal_link.gif)
+![invalid_absolute_link](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/invalid_absolute_link.gif)
 
 ### 📁 Advanced File Reference Tracking
 Intelligent language service that automatically maintains file references:
@@ -43,22 +43,22 @@ Intelligent language service that automatically maintains file references:
 - **Navigation Sync**: Updates `mint.json` navigation when files are moved
 - **Real-time Analysis**: Tracks file dependencies across your documentation
 
-![update_references](images/update_references.gif)
+![update_references](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/update_references.gif)
 
 ### 🎯 Efficient Context Menu Actions
 
-![copy_internal_link](images/copy_internal_link.gif)
-![copy_import_statement](images/copy_import_statement.gif)
+![copy_internal_link](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/copy_internal_link.gif)
+![copy_import_statement](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/copy_import_statement.gif)
 
 ### 🪄 Efficient CodeLens Actions
 
 - **Open File**: Open the file that the internal link points to.
 
-![open_file](images/open_file.gif)
+![open_file](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/open_file.gif)
 
 - **Generate and copy heading anchor**:  Using fixed anchor can avoid the failure to jump through the anchor after modifying the heading.
 
-![generate_and_copy_heading_anchor](images/generate_and_copy_heading_anchor.gif)
+![generate_and_copy_heading_anchor](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/generate_and_copy_heading_anchor.gif)
 
 
 ## ⚙️ Configuration
