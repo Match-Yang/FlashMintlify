@@ -15,11 +15,11 @@ You don't need to remember all the rules!
 
 You only need to type "<" to trigger the component completion.
 
-<video src="images/components_completion.mp4" controls autoplay loop muted></video>
+![components_completion](images/components_completion.gif)
 
 You only need to type "```" to trigger the code block completion.
 
-<video src="images/code_block_completion.mp4" controls autoplay loop muted></video>
+![code_block_completion](images/code_block_completion.gif)
 
 
 ### 🔗 Smart Link Management & Validation
@@ -31,8 +31,8 @@ Real-time link validation and automatic updates:
 - **Status Bar Indicators**: Real-time count of invalid links in current file
 - **Auto-Resolution**: Automatically tries `.mdx`, `.md`, `index.mdx`, `index.md` extensions
 
-<video src="images/invalid_internal_link.mp4" controls autoplay loop muted></video>
-<video src="images/invalid_absolute_link.mp4" controls autoplay loop muted></video>
+![invalid_internal_link](images/invalid_internal_link.gif)
+![invalid_absolute_link](images/invalid_absolute_link.gif)
 
 ### 📁 Advanced File Reference Tracking
 Intelligent language service that automatically maintains file references:
@@ -43,22 +43,22 @@ Intelligent language service that automatically maintains file references:
 - **Navigation Sync**: Updates `mint.json` navigation when files are moved
 - **Real-time Analysis**: Tracks file dependencies across your documentation
 
-<video src="images/update_references.mp4" controls autoplay loop muted></video>
+![update_references](images/update_references.gif)
 
 ### 🎯 Efficient Context Menu Actions
 
-<video src="images/copy_internal_link.mp4" controls autoplay loop muted></video>
-<video src="images/copy_import_statement.mp4" controls autoplay loop muted></video>
+![copy_internal_link](images/copy_internal_link.gif)
+![copy_import_statement](images/copy_import_statement.gif)
 
 ### 🪄 Efficient CodeLens Actions
 
 - **Open File**: Open the file that the internal link points to.
 
-<video src="images/open_file.mp4" controls autoplay loop muted></video>
+![open_file](images/open_file.gif)
 
 - **Generate and copy heading anchor**:  Using fixed anchor can avoid the failure to jump through the anchor after modifying the heading.
 
-<video src="images/generate_and_copy_heading_anchor.mp4" controls autoplay loop muted></video>
+![generate_and_copy_heading_anchor](images/generate_and_copy_heading_anchor.gif)
 
 
 ## ⚙️ Configuration
