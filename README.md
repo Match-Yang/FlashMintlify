@@ -1,21 +1,26 @@
 # FlashMintlify
 
-> **The ultimate VS Code extension for Mintlify documentation development**
+> **Life is hard, writing should be easy!**
 
-Fast and powerful Mintlify documentation development with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.
+A super powerful extension that’ll make your Mintlify writing fly. It comes with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.
+
+🌟 Like this tool? Your star is my biggest motivation to keep improving!  
+👉 [Click here to give FlashMintlify a star!](https://github.com/Match-Yang/FlashMintlify)  
+Let more people discover and use the more efficient Mintlify writing experience!
 
 ## ✨ Key Features
 
 ### 🚀 Intelligent Component Completion
-Smart autocompletion for all Mintlify components with live preview and documentation:
+You don't need to remember all the rules!
 
-- **Callouts**: Note, Tip, Warning, Info, Check, Caution
-- **Layout**: Accordion, AccordionGroup, Card, CardGroup, Tabs, Steps
-- **Code**: CodeGroup with syntax highlighting and multiple language support
-- **Media**: Frame for images and videos with captions
-- **API Documentation**: ParamField, ResponseField, Expandable
-- **Interactive**: Tooltip, Icon, Panel, Update changelog
-- **Advanced**: Custom components with prop suggestions
+You only need to type "<" to trigger the component completion.
+
+<video src="images/components_completion.mp4" controls autoplay loop muted></video>
+
+You only need to type "```" to trigger the code block completion.
+
+<video src="images/code_block_completion.mp4" controls autoplay loop muted></video>
+
 
 ### 🔗 Smart Link Management & Validation
 Real-time link validation and automatic updates:
@@ -26,6 +31,9 @@ Real-time link validation and automatic updates:
 - **Status Bar Indicators**: Real-time count of invalid links in current file
 - **Auto-Resolution**: Automatically tries `.mdx`, `.md`, `index.mdx`, `index.md` extensions
 
+<video src="images/invalid_internal_link.mp4" controls autoplay loop muted></video>
+<video src="images/invalid_absolute_link.mp4" controls autoplay loop muted></video>
+
 ### 📁 Advanced File Reference Tracking
 Intelligent language service that automatically maintains file references:
 
@@ -35,55 +43,23 @@ Intelligent language service that automatically maintains file references:
 - **Navigation Sync**: Updates `mint.json` navigation when files are moved
 - **Real-time Analysis**: Tracks file dependencies across your documentation
 
-### 🎯 Enhanced Developer Experience
-Productivity features designed for documentation teams:
+<video src="images/update_references.mp4" controls autoplay loop muted></video>
 
-- **Context Menu Actions**: Right-click to copy internal links or import statements
-- **CodeLens Actions**: Quick actions for headings, tables, and content
-- **Frontmatter Support**: Easy metadata editing with templates
-- **File Import Provider**: Visual file reference management
-- **Progress Reporting**: Real-time feedback during bulk operations
+### 🎯 Efficient Context Menu Actions
 
-## 🚀 Quick Start
+<video src="images/copy_internal_link.mp4" controls autoplay loop muted></video>
+<video src="images/copy_import_statement.mp4" controls autoplay loop muted></video>
 
-1. **Install** the extension from VS Code Marketplace
-2. **Open** your Mintlify project folder in VS Code
-3. **Start typing** `<` in any `.md` or `.mdx` file to trigger component completion
-4. **Use** `Ctrl+Shift+P` to access FlashMintlify commands
+### 🪄 Efficient CodeLens Actions
 
-## 📋 Component Snippets
+- **Open File**: Open the file that the internal link points to.
 
-| Component | Trigger | Description |
-|-----------|---------|-------------|
-| `<Note>` | `Mintlify: Callout - Note` | Insert informational callout |
-| `<Tip>` | `Mintlify: Callout - Tip` | Insert helpful tip callout |
-| `<Warning>` | `Mintlify: Callout - Warning` | Insert warning callout |
-| `<Info>` | `Mintlify: Callout - Info` | Insert info callout |
-| `<Check>` | `Mintlify: Callout - Check` | Insert success callout |
-| `<Accordion>` | `Mintlify: Accordion` | Create collapsible content |
-| `<AccordionGroup>` | `Mintlify: AccordionGroup` | Group multiple accordions |
-| `<CodeGroup>` | `Mintlify: CodeGroup` | Group multiple code blocks |
-| `<Tabs>` | `Mintlify: Tabs` | Create tabbed content |
-| `<Card>` | `Mintlify: Card` | Insert clickable card |
-| `<CardGroup>` | `Mintlify: CardGroup` | Group multiple cards |
-| `<Frame>` | `Mintlify: Frame` | Add image/video with caption |
-| `<ParamField>` | `Mintlify: ParamField` | Document API parameters |
-| `<ResponseField>` | `Mintlify: ResponseField` | Document API responses |
+<video src="images/open_file.mp4" controls autoplay loop muted></video>
 
-## 🎮 Commands & Actions
+- **Generate and copy heading anchor**:  Using fixed anchor can avoid the failure to jump through the anchor after modifying the heading.
 
-### Editor Commands
-- **Insert Frontmatter**: Add Mintlify frontmatter template
-- **Calculate Import References**: Analyze file dependencies
+<video src="images/generate_and_copy_heading_anchor.mp4" controls autoplay loop muted></video>
 
-### Context Menu (Right-click on files)
-- **Copy Internal Link**: Generate Mintlify internal link format `[Title](/path)`
-- **Copy Import Command**: Generate MDX import statement with props
-
-### Language Service Commands
-- **Analyze References**: Debug file reference tracking
-- **Reload Language Service**: Restart the language service
-- **Handle Folder Rename**: Manually trigger folder rename handling
 
 ## ⚙️ Configuration
 
@@ -95,20 +71,6 @@ Productivity features designed for documentation teams:
 
 ### Settings
 - `flashMintlify.enableLanguageService`: Enable/disable automatic file reference tracking and updates
-
-## 🔍 Link Validation Features
-
-### Real-time Validation
-- ✅ **Valid Internal Links**: Shows "📄 Open file" CodeLens button
-- ❌ **Invalid Internal Links**: Shows "❌ Invalid internal link" warning
-- ❌ **Invalid Absolute Links**: Shows "❌ Invalid absolute link" warning
-- 📊 **Status Bar**: Displays count of invalid links in current file
-
-### Link Types Supported
-- **Internal Links**: `/api-reference/authentication` (Mintlify routing)
-- **Absolute File Links**: `/images/logo.png` (workspace files)
-- **Markdown Links**: `[text](/path)` and `[](/path)` (empty text supported)
-- **MDX/JSX Links**: `<a href="/path">` and `<Link to="/path">`
 
 ## 🛠️ System Requirements
 
