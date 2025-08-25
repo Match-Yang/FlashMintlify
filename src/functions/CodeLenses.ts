@@ -1,13 +1,9 @@
 import * as vscode from 'vscode';
 
-
-
-
-
 class HeadingCodeLensProvider implements vscode.CodeLensProvider {
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 		const codeLenses: vscode.CodeLens[] = [];
-		// 匹配 Markdown 中的标题，包括中文和其他字符
+		// Match headings in Markdown, including Chinese and other characters
 		const regex = /^(#+)\s+(.*)$/gm;
 		const anchorRegex = /<a\s+[^>]*id=["']([^"']+)["'][^>]*>/i;
 		let match;
@@ -141,18 +137,15 @@ class TableCodeLensProvider implements vscode.CodeLensProvider {
 
 
 function createCodeLensesProviders() {
-
-
-
 	const headingIdProvider = vscode.languages.registerCodeLensProvider(
 		[{ language: 'markdown', scheme: 'file' }, { language: 'mdx', scheme: 'file' }],
 		new HeadingCodeLensProvider()
 	)
 
-	const tableProvider = vscode.languages.registerCodeLensProvider(
-		[{ language: 'markdown', scheme: 'file' }, { language: 'mdx', scheme: 'file' }],
-		new TableCodeLensProvider()
-	)
+	// const tableProvider = vscode.languages.registerCodeLensProvider(
+	// 	[{ language: 'markdown', scheme: 'file' }, { language: 'mdx', scheme: 'file' }],
+	// 	new TableCodeLensProvider()
+	// )
 
 	const copyHeadingIdCommand = vscode.commands.registerCommand('flashMintlify.codelens.copyheadingid', (headingText: string) => {
 		const headingId = headingText.toLowerCase().replace(/\s+/g, '-').replace(/[^\p{L}\p{N}-]/gu, '');
@@ -206,175 +199,175 @@ function createCodeLensesProviders() {
 	});
 
 
-	// 表格设置宽度命令
-	const setTableWidthCommand = vscode.commands.registerCommand('flashMintlify.codelens.table.setwidth', async (range: vscode.Range, lineIndex: number, lineText: string) => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) return;
+	// // 表格设置宽度命令
+	// const setTableWidthCommand = vscode.commands.registerCommand('flashMintlify.codelens.table.setwidth', async (range: vscode.Range, lineIndex: number, lineText: string) => {
+	// 	const editor = vscode.window.activeTextEditor;
+	// 	if (!editor) return;
 
-		// 计算当前光标所在的列
-		const cursorPosition = editor.selection.active;
-		let columnIndex = 0;
-		if (cursorPosition.line === lineIndex) {
-			const beforeCursor = lineText.substring(0, cursorPosition.character);
-			columnIndex = Math.max(0, (beforeCursor.match(/\|/g) || []).length - 1);
-		}
+	// 	// 计算当前光标所在的列
+	// 	const cursorPosition = editor.selection.active;
+	// 	let columnIndex = 0;
+	// 	if (cursorPosition.line === lineIndex) {
+	// 		const beforeCursor = lineText.substring(0, cursorPosition.character);
+	// 		columnIndex = Math.max(0, (beforeCursor.match(/\|/g) || []).length - 1);
+	// 	}
 
-		const width = await vscode.window.showInputBox({
-			prompt: 'Enter column width (e.g., 50%)',
-			placeHolder: '50%'
-		});
+	// 	const width = await vscode.window.showInputBox({
+	// 		prompt: 'Enter column width (e.g., 50%)',
+	// 		placeHolder: '50%'
+	// 	});
 
-		if (width) {
-			const columns = lineText.split('|').map(col => col.trim()).filter(col => col !== '');
-			if (columnIndex < columns.length) {
-				// 移除现有的宽度设置
-				let columnText = columns[columnIndex].replace(/-\d+%?/, '');
-				// 添加新的宽度设置
-				columnText += `-${width}`;
-				columns[columnIndex] = columnText;
+	// 	if (width) {
+	// 		const columns = lineText.split('|').map(col => col.trim()).filter(col => col !== '');
+	// 		if (columnIndex < columns.length) {
+	// 			// 移除现有的宽度设置
+	// 			let columnText = columns[columnIndex].replace(/-\d+%?/, '');
+	// 			// 添加新的宽度设置
+	// 			columnText += `-${width}`;
+	// 			columns[columnIndex] = columnText;
 
-				const newLineText = '|' + columns.join(' | ') + '|';
-				editor.edit(editBuilder => {
-					editBuilder.replace(range, newLineText);
-				});
-			}
-		}
-	});
+	// 			const newLineText = '|' + columns.join(' | ') + '|';
+	// 			editor.edit(editBuilder => {
+	// 				editBuilder.replace(range, newLineText);
+	// 			});
+	// 		}
+	// 	}
+	// });
 
-	// 表格设置对齐命令
-	const setTableAlignmentCommand = vscode.commands.registerCommand('flashMintlify.codelens.table.setalignment', async (range: vscode.Range, lineIndex: number, lineText: string) => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) return;
+	// // 表格设置对齐命令
+	// const setTableAlignmentCommand = vscode.commands.registerCommand('flashMintlify.codelens.table.setalignment', async (range: vscode.Range, lineIndex: number, lineText: string) => {
+	// 	const editor = vscode.window.activeTextEditor;
+	// 	if (!editor) return;
 
-		// 计算当前光标所在的列
-		const cursorPosition = editor.selection.active;
-		let columnIndex = 0;
-		if (cursorPosition.line === lineIndex) {
-			const beforeCursor = lineText.substring(0, cursorPosition.character);
-			columnIndex = Math.max(0, (beforeCursor.match(/\|/g) || []).length - 1);
-		}
+	// 	// 计算当前光标所在的列
+	// 	const cursorPosition = editor.selection.active;
+	// 	let columnIndex = 0;
+	// 	if (cursorPosition.line === lineIndex) {
+	// 		const beforeCursor = lineText.substring(0, cursorPosition.character);
+	// 		columnIndex = Math.max(0, (beforeCursor.match(/\|/g) || []).length - 1);
+	// 	}
 
-		const alignment = await vscode.window.showQuickPick([
-			{ label: 'Left', value: 'l', description: 'Left alignment' },
-			{ label: 'Center', value: 'c', description: 'Center alignment' },
-			{ label: 'Right', value: 'r', description: 'Right alignment' }
-		], {
-			placeHolder: 'Select column alignment'
-		});
+	// 	const alignment = await vscode.window.showQuickPick([
+	// 		{ label: 'Left', value: 'l', description: 'Left alignment' },
+	// 		{ label: 'Center', value: 'c', description: 'Center alignment' },
+	// 		{ label: 'Right', value: 'r', description: 'Right alignment' }
+	// 	], {
+	// 		placeHolder: 'Select column alignment'
+	// 	});
 
-		if (alignment) {
-			const columns = lineText.split('|').map(col => col.trim()).filter(col => col !== '');
-			if (columnIndex < columns.length) {
-				// 移除现有的对齐设置
-				let columnText = columns[columnIndex].replace(/-[lcr]$/, '');
-				// 添加新的对齐设置
-				columnText += `-${alignment.value}`;
-				columns[columnIndex] = columnText;
+	// 	if (alignment) {
+	// 		const columns = lineText.split('|').map(col => col.trim()).filter(col => col !== '');
+	// 		if (columnIndex < columns.length) {
+	// 			// 移除现有的对齐设置
+	// 			let columnText = columns[columnIndex].replace(/-[lcr]$/, '');
+	// 			// 添加新的对齐设置
+	// 			columnText += `-${alignment.value}`;
+	// 			columns[columnIndex] = columnText;
 
-				const newLineText = '|' + columns.join(' | ') + '|';
-				editor.edit(editBuilder => {
-					editBuilder.replace(range, newLineText);
-				});
-			}
-		}
-	});
+	// 			const newLineText = '|' + columns.join(' | ') + '|';
+	// 			editor.edit(editBuilder => {
+	// 				editBuilder.replace(range, newLineText);
+	// 			});
+	// 		}
+	// 	}
+	// });
 
-	// 表格合并单元格命令
-	const mergeTableCellCommand = vscode.commands.registerCommand('flashMintlify.codelens.table.merge', async (range: vscode.Range, lineIndex: number, lineText: string) => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) return;
+	// // 表格合并单元格命令
+	// const mergeTableCellCommand = vscode.commands.registerCommand('flashMintlify.codelens.table.merge', async (range: vscode.Range, lineIndex: number, lineText: string) => {
+	// 	const editor = vscode.window.activeTextEditor;
+	// 	if (!editor) return;
 
-		const cursorPosition = editor.selection.active;
-		const document = editor.document;
-		const lines = document.getText().split('\n');
+	// 	const cursorPosition = editor.selection.active;
+	// 	const document = editor.document;
+	// 	const lines = document.getText().split('\n');
 
-		// 找到光标所在的表格行
-		let targetLineIndex = cursorPosition.line;
-		let targetLine = lines[targetLineIndex];
+	// 	// 找到光标所在的表格行
+	// 	let targetLineIndex = cursorPosition.line;
+	// 	let targetLine = lines[targetLineIndex];
 
-		// 检查光标是否在表格区域内
-		if (!targetLine.trim().startsWith('|') || !targetLine.trim().endsWith('|')) {
-			vscode.window.showWarningMessage('请将光标放在表格单元格内');
-			return;
-		}
+	// 	// 检查光标是否在表格区域内
+	// 	if (!targetLine.trim().startsWith('|') || !targetLine.trim().endsWith('|')) {
+	// 		vscode.window.showWarningMessage('请将光标放在表格单元格内');
+	// 		return;
+	// 	}
 
-		// 检查是否是分隔行
-		const columns = targetLine.split('|').filter(col => col.trim() !== '');
-		let isSeparator = true;
-		for (const col of columns) {
-			const trimmedCol = col.trim();
-			if (!trimmedCol.includes('-') && !trimmedCol.includes(':')) {
-				isSeparator = false;
-				break;
-			}
-		}
+	// 	// 检查是否是分隔行
+	// 	const columns = targetLine.split('|').filter(col => col.trim() !== '');
+	// 	let isSeparator = true;
+	// 	for (const col of columns) {
+	// 		const trimmedCol = col.trim();
+	// 		if (!trimmedCol.includes('-') && !trimmedCol.includes(':')) {
+	// 			isSeparator = false;
+	// 			break;
+	// 		}
+	// 	}
 
-		if (isSeparator) {
-			vscode.window.showWarningMessage('请将光标放在表格单元格内容中，而不是分隔行');
-			return;
-		}
+	// 	if (isSeparator) {
+	// 		vscode.window.showWarningMessage('请将光标放在表格单元格内容中，而不是分隔行');
+	// 		return;
+	// 	}
 
-		// 计算当前光标所在的列
-		const beforeCursor = targetLine.substring(0, cursorPosition.character);
-		const pipeCount = (beforeCursor.match(/\|/g) || []).length;
+	// 	// 计算当前光标所在的列
+	// 	const beforeCursor = targetLine.substring(0, cursorPosition.character);
+	// 	const pipeCount = (beforeCursor.match(/\|/g) || []).length;
 
-		// 检查光标是否在单元格内（不在|符号上）
-		if (pipeCount === 0 || targetLine[cursorPosition.character] === '|') {
-			vscode.window.showWarningMessage('请将光标放在表格单元格内容中，而不是在分隔符上');
-			return;
-		}
+	// 	// 检查光标是否在单元格内（不在|符号上）
+	// 	if (pipeCount === 0 || targetLine[cursorPosition.character] === '|') {
+	// 		vscode.window.showWarningMessage('请将光标放在表格单元格内容中，而不是在分隔符上');
+	// 		return;
+	// 	}
 
-		const mergeDirection = await vscode.window.showQuickPick([
-			{ label: 'Merge Up', value: 'up', description: 'Merge with cell above' },
-			{ label: 'Merge Down', value: 'down', description: 'Merge with cell below' },
-			{ label: 'Merge Left', value: 'left', description: 'Merge with cell to the left' },
-			{ label: 'Merge Right', value: 'right', description: 'Merge with cell to the right' }
-		], {
-			placeHolder: 'Select merge direction'
-		});
+	// 	const mergeDirection = await vscode.window.showQuickPick([
+	// 		{ label: 'Merge Up', value: 'up', description: 'Merge with cell above' },
+	// 		{ label: 'Merge Down', value: 'down', description: 'Merge with cell below' },
+	// 		{ label: 'Merge Left', value: 'left', description: 'Merge with cell to the left' },
+	// 		{ label: 'Merge Right', value: 'right', description: 'Merge with cell to the right' }
+	// 	], {
+	// 		placeHolder: 'Select merge direction'
+	// 	});
 
-		if (mergeDirection) {
-			// 获取光标所在的单元格位置
-			const columnIndex = Math.max(0, pipeCount - 1);
-			const targetColumns = targetLine.split('|').map(col => col.trim()).filter(col => col !== '');
+	// 	if (mergeDirection) {
+	// 		// 获取光标所在的单元格位置
+	// 		const columnIndex = Math.max(0, pipeCount - 1);
+	// 		const targetColumns = targetLine.split('|').map(col => col.trim()).filter(col => col !== '');
 
-			if (columnIndex < targetColumns.length) {
-				// 根据合并方向设置对应的标记
-				let mergeMarker = '';
-				switch (mergeDirection.value) {
-					case 'up':
-						mergeMarker = '!mu';
-						break;
-					case 'down':
-						mergeMarker = '!md';
-						break;
-					case 'left':
-						mergeMarker = '!ml';
-						break;
-					case 'right':
-						mergeMarker = '!mr';
-						break;
-				}
+	// 		if (columnIndex < targetColumns.length) {
+	// 			// 根据合并方向设置对应的标记
+	// 			let mergeMarker = '';
+	// 			switch (mergeDirection.value) {
+	// 				case 'up':
+	// 					mergeMarker = '!mu';
+	// 					break;
+	// 				case 'down':
+	// 					mergeMarker = '!md';
+	// 					break;
+	// 				case 'left':
+	// 					mergeMarker = '!ml';
+	// 					break;
+	// 				case 'right':
+	// 					mergeMarker = '!mr';
+	// 					break;
+	// 			}
 
-				// 替换当前单元格内容为合并标记
-				targetColumns[columnIndex] = mergeMarker;
-				const newLineText = '|' + targetColumns.join(' | ') + '|';
+	// 			// 替换当前单元格内容为合并标记
+	// 			targetColumns[columnIndex] = mergeMarker;
+	// 			const newLineText = '|' + targetColumns.join(' | ') + '|';
 
-				const targetRange = new vscode.Range(targetLineIndex, 0, targetLineIndex, targetLine.length);
-				editor.edit(editBuilder => {
-					editBuilder.replace(targetRange, newLineText);
-				}).then(success => {
-					if (success) {
-						vscode.window.showInformationMessage(`单元格已设置为${mergeDirection.label}标记: ${mergeMarker}`);
-					} else {
-						vscode.window.showErrorMessage('合并标记设置失败');
-					}
-				});
-			}
-		}
-	});
+	// 			const targetRange = new vscode.Range(targetLineIndex, 0, targetLineIndex, targetLine.length);
+	// 			editor.edit(editBuilder => {
+	// 				editBuilder.replace(targetRange, newLineText);
+	// 			}).then(success => {
+	// 				if (success) {
+	// 					vscode.window.showInformationMessage(`单元格已设置为${mergeDirection.label}标记: ${mergeMarker}`);
+	// 				} else {
+	// 					vscode.window.showErrorMessage('合并标记设置失败');
+	// 				}
+	// 			});
+	// 		}
+	// 	}
+	// });
 
-	return [headingIdProvider, copyHeadingIdCommand, tableProvider, setTableWidthCommand, setTableAlignmentCommand, mergeTableCellCommand, generateAnchorCommand, copyAnchorCommand]
+	return [headingIdProvider, copyHeadingIdCommand, /*tableProvider, setTableWidthCommand, setTableAlignmentCommand, mergeTableCellCommand,*/  generateAnchorCommand, copyAnchorCommand]
 }
 
 export { createCodeLensesProviders };

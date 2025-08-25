@@ -9,7 +9,7 @@ import { createSettingChangedListenerProvider } from './helpers/SettingChangedLi
 import { createCodeLensesProviders } from './functions/CodeLenses';
 // import { createTerminologyQuickFixProviders } from './functions/TerminologyQuickFix'
 import { createExplorerMenuProviders } from './functions/ExplorerMenu'
-import { createNavigationProviders } from './functions/Navigation'
+// import { createNavigationProviders } from './functions/Navigation'
 import { createFileImportProviders } from './functions/FileImportProvider';
 import { createFlashMintlifyLanguageServiceProvider } from './utils/FlashMintlifyLanguageServiceMain';
 import { createInternalLinkProviders } from './functions/ProvidersBootstrap';
@@ -48,7 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
     ...createCodeLensesProviders(),
     ...createCompletionProviders(),
     ...createExplorerMenuProviders(),
-    ...createNavigationProviders(),
+    // ...createNavigationProviders(),
     ...createFileImportProviders(),
     ...createFlashMintlifyLanguageServiceProvider(),
     createFrontmatterProvider(),

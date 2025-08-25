@@ -2,7 +2,7 @@
     "name": "flash-mintlify",
     "displayName": "FlashMintlify",
     "description": "The ultimate VS Code extension for Mintlify documentation development with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "publisher": "FlashDocs",
     "private": true,
     "license": "MIT",
@@ -76,7 +76,7 @@
             },
             {
                 "command": "flashMintlify.explorer.copyImport",
-                "title": "Copy import command",
+                "title": "Copy import statement",
                 "category": "FlashMintlify Explorer"
             },
             {
