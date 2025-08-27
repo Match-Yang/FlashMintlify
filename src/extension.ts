@@ -13,6 +13,7 @@ import { createExplorerMenuProviders } from './functions/ExplorerMenu'
 import { createFileImportProviders } from './functions/FileImportProvider';
 import { createFlashMintlifyLanguageServiceProvider } from './utils/FlashMintlifyLanguageServiceMain';
 import { createInternalLinkProviders } from './functions/ProvidersBootstrap';
+import { createPlaceholderProvider } from './functions/PlaceholderProvider';
 
 /**
  * Check if the workspace root contains a mint.json file
@@ -44,6 +45,11 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log('FlashMintlify: mint.json found, activating extension features');
   const settingChangedListenerProvider = createSettingChangedListenerProvider();
 
+  // Register AI command
+  const writeWithAICommand = vscode.commands.registerCommand('flashMintlify.writeWithAI', async () => {
+    vscode.window.showInformationMessage('Coming soon...');
+  });
+
   context.subscriptions.push(
     ...createCodeLensesProviders(),
     ...createCompletionProviders(),
@@ -52,7 +58,8 @@ export async function activate(context: vscode.ExtensionContext) {
     ...createFileImportProviders(),
     ...createFlashMintlifyLanguageServiceProvider(),
     createFrontmatterProvider(),
-
+    createPlaceholderProvider(),
+    writeWithAICommand,
     settingChangedListenerProvider
   );
 

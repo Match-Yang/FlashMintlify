@@ -16,8 +16,8 @@ function createFrontmatterProvider() {
 		let options = [
 			{ label: 'Page metadata' , kind: vscode.QuickPickItemKind.Separator },
 			{ label: 'title', picked: true, default: defaultTitle, type: 'string', description: "The title of your page that appears in navigation and browser tabs." },
-			{ label: 'description', picked: false, default: "", type: 'string', description: "A brief description of what this page covers. Appears under the title and improves SEO." },
-			{ label: 'sidebarTitle', picked: false, default: "", type: 'string', description: "A short title that displays in the sidebar navigation." },
+			{ label: 'description', picked: true, default: "", type: 'string', description: "A brief description of what this page covers. Appears under the title and improves SEO." },
+			{ label: 'sidebarTitle', picked: true, default: "", type: 'string', description: "A short title that displays in the sidebar navigation." },
 			{ label: 'icon', picked: false, default: "", type: 'string', description: "The icon to display." },
 			{ label: 'iconType', picked: false, default: "solid", type: 'string', description: "The Font Awesome icon style. Only used with Font Awesome icons." },
 			{ label: 'tag', picked: false, default: "", type: 'string', description: "A tag that appears next to your page title in the sidebar." },

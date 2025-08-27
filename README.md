@@ -10,6 +10,12 @@ Let more people discover and use the more efficient Mintlify writing experience!
 
 ## ✨ Key Features
 
+### 🔥 Slash Commands
+
+Just type "/" to trigger the slash commands and get the following features:
+
+![slash_commands](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/slash_commands.gif)
+
 ### 🚀 Intelligent Component Completion
 You don't need to remember all the rules!
 
