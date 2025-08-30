@@ -51,13 +51,13 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(
-    ...createCodeLensesProviders(),
+    ...createCodeLensesProviders(context.extensionUri),
     ...createCompletionProviders(),
     ...createExplorerMenuProviders(),
     // ...createNavigationProviders(),
     ...createFileImportProviders(),
     ...createFlashMintlifyLanguageServiceProvider(),
-    createFrontmatterProvider(),
+    createFrontmatterProvider(context),
     createPlaceholderProvider(),
     writeWithAICommand,
     settingChangedListenerProvider

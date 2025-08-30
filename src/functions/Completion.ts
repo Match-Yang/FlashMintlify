@@ -278,33 +278,33 @@ class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvide
 		// Basic Commands
 		const basicCommands = [
 			{
-				label: '📝 Insert Frontmatter',
-				detail: 'Insert document frontmatter',
-				description: 'Quick insert Mintlify document frontmatter template',
+				label: '📝 Set page options',
+				detail: 'Set page frontmatter options',
+				description: 'Open page options editor for Mintlify frontmatter',
 				command: 'flashMintlify.basic.frontmatter',
 				insertText: ''
 			},
-			{
-				label: '🔍 Calculate Import References',
-				detail: 'Calculate import references',
-				description: 'Analyze and display file import relationships',
-				command: 'flashMintlify.basic.calculateimport',
-				insertText: ''
-			},
-			{
-				label: '📈 Current Date',
-				detail: 'Insert current date',
-				description: 'Insert formatted current date',
-				insertText: new Date().toISOString().split('T')[0],
-				kind: vscode.CompletionItemKind.Text
-			},
-			{
-				label: '⏰ Current DateTime',
-				detail: 'Insert current date and time',
-				description: 'Insert complete current date and time',
-				insertText: new Date().toISOString().replace('T', ' ').split('.')[0],
-				kind: vscode.CompletionItemKind.Text
-			},
+			// {
+			// 	label: '🔍 Calculate Import References',
+			// 	detail: 'Calculate import references',
+			// 	description: 'Analyze and display file import relationships',
+			// 	command: 'flashMintlify.basic.calculateimport',
+			// 	insertText: ''
+			// },
+			// {
+			// 	label: '📈 Current Date',
+			// 	detail: 'Insert current date',
+			// 	description: 'Insert formatted current date',
+			// 	insertText: new Date().toISOString().split('T')[0],
+			// 	kind: vscode.CompletionItemKind.Text
+			// },
+			// {
+			// 	label: '⏰ Current DateTime',
+			// 	detail: 'Insert current date and time',
+			// 	description: 'Insert complete current date and time',
+			// 	insertText: new Date().toISOString().replace('T', ' ').split('.')[0],
+			// 	kind: vscode.CompletionItemKind.Text
+			// },
 			{
 				label: '📊 Insert Table',
 				detail: 'Insert table',

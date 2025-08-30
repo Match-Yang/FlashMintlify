@@ -2,7 +2,7 @@
     "name": "flash-mintlify",
     "displayName": "FlashMintlify",
     "description": "The ultimate VS Code extension for Mintlify documentation development with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.",
-    "version": "1.0.6",
+    "version": "1.1.0",
     "publisher": "FlashDocs",
     "private": true,
     "license": "MIT",
@@ -59,7 +59,7 @@
         "commands": [
             {
                 "command": "flashMintlify.basic.frontmatter",
-                "title": "Insert frontmatter",
+                "title": "Set page options",
                 "category": "FlashMintlify Basic"
             },
             {
@@ -156,7 +156,7 @@
         "compile": "tsc --skipLibCheck -p ./ && npm run copy-resources",
         "lint": "eslint \"src/**/*.ts\"",
         "watch": "tsc --skipLibCheck -watch -p ./",
-        "copy-resources": "copyfiles 'resources/**' out/",
+        "copy-resources": "copyfiles 'resources/**' 'src/config/**' out/",
         "publish": "npm run compile && vsce publish"
     },
     "devDependencies": {

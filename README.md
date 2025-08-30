@@ -10,11 +10,20 @@ Let more people discover and use the more efficient Mintlify writing experience!
 
 ## ✨ Key Features
 
+
+### 🖼️ Visual Page Options Editor
+
+![frontmatter_visual_editor](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/set-frontmatter.gif)
+
+### 🧩 Visual Component Property Editor
+
+![component_attribute_visual_editor](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/set-properties.gif)
+
 ### 🔥 Slash Commands
 
 Just type "/" to trigger the slash commands and get the following features:
 
-![slash_commands](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/slash_commands.gif)
+![slash_commands](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/slash_command.gif)
 
 ### 🚀 Intelligent Component Completion
 You don't need to remember all the rules!

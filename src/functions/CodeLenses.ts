@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { createMintlifyComponentCodeLensProvider } from './MintlifyComponentCodeLens';
 
 class HeadingCodeLensProvider implements vscode.CodeLensProvider {
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
@@ -136,7 +137,7 @@ class TableCodeLensProvider implements vscode.CodeLensProvider {
 }
 
 
-function createCodeLensesProviders() {
+function createCodeLensesProviders(extensionUri?: vscode.Uri) {
 	const headingIdProvider = vscode.languages.registerCodeLensProvider(
 		[{ language: 'markdown', scheme: 'file' }, { language: 'mdx', scheme: 'file' }],
 		new HeadingCodeLensProvider()
@@ -367,7 +368,17 @@ function createCodeLensesProviders() {
 	// 	}
 	// });
 
-	return [headingIdProvider, copyHeadingIdCommand, /*tableProvider, setTableWidthCommand, setTableAlignmentCommand, mergeTableCellCommand,*/  generateAnchorCommand, copyAnchorCommand]
+	// 创建Mintlify组件CodeLens提供器
+	const mintlifyComponentProviders = createMintlifyComponentCodeLensProvider(extensionUri);
+
+	return [
+		headingIdProvider,
+		copyHeadingIdCommand,
+		/*tableProvider, setTableWidthCommand, setTableAlignmentCommand, mergeTableCellCommand,*/
+		generateAnchorCommand,
+		copyAnchorCommand,
+		...mintlifyComponentProviders
+	]
 }
 
 export { createCodeLensesProviders };

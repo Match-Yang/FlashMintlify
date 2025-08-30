@@ -1,0 +1,260 @@
+{
+  "components": {
+    "Icon": {
+      "attributes": {
+        "icon": {
+          "type": "searchable",
+          "options": [],
+          "description": "Font Awesome icon, Lucide icon, URL, or relative path to an icon"
+        },
+        "iconType": {
+          "type": "select",
+          "options": ["regular", "solid", "light", "thin", "sharp-solid", "duotone", "brands"],
+          "description": "Icon style for Font Awesome icons only"
+        },
+        "color": {
+          "type": "color",
+          "description": "Icon color as hex code (e.g., #FF5733)"
+        },
+        "size": {
+          "type": "number",
+          "description": "Icon size in pixels"
+        }
+      }
+    },
+    "Card": {
+      "attributes": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "description": "The title displayed on the card"
+        },
+        "color": {
+          "type": "color",
+          "description": "Icon color as hex code (e.g., #FF6B6B)"
+        },
+        "href": {
+          "type": "text",
+          "description": "URL to navigate to when the card is clicked"
+        },
+        "horizontal": {
+          "type": "boolean",
+          "description": "Display the card in a compact horizontal layout"
+        },
+        "img": {
+          "type": "text",
+          "description": "URL or local path to an image displayed at the top of the card"
+        },
+        "cta": {
+          "type": "text",
+          "description": "Custom text for the action button"
+        },
+        "arrow": {
+          "type": "boolean",
+          "description": "Show or hide the link arrow icon"
+        },
+        "icon": {
+          "type": "searchable",
+          "options": [],
+          "description": "Font Awesome icon, Lucide icon, URL, or relative path to an icon"
+        },
+        "iconType": {
+          "type": "select",
+          "options": ["regular", "solid", "light", "thin", "sharp-solid", "duotone", "brands"],
+          "description": "Icon style for Font Awesome icons only"
+        }
+      }
+    },
+    "Accordion": {
+      "attributes": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "description": "Title in the Accordion preview"
+        },
+        "description": {
+          "type": "text",
+          "description": "Detail below the title in the Accordion preview"
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "description": "Whether the Accordion is open by default"
+        },
+        "icon": {
+          "type": "searchable",
+          "options": [],
+          "description": "Font Awesome icon, Lucide icon, or SVG code"
+        },
+        "iconType": {
+          "type": "select",
+          "options": ["regular", "solid", "light", "thin", "sharp-solid", "duotone", "brands"],
+          "description": "Icon style for Font Awesome icons only"
+        }
+      }
+    },
+    "Tab": {
+      "attributes": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "description": "The title of the tab. Short titles are easier to navigate"
+        },
+        "icon": {
+          "type": "searchable",
+          "options": [
+            "flag", "star", "heart", "home", "user", "settings", "search", "menu", "close", "check", "arrow-right", "arrow-left", "arrow-up", "arrow-down",
+            "plus", "minus", "edit", "delete", "save", "download", "upload", "share", "copy", "paste", "cut", "undo", "redo", "refresh", "sync"
+          ],
+          "description": "Font Awesome icon, Lucide icon, URL, or relative path to an icon"
+        },
+        "iconType": {
+          "type": "select",
+          "options": ["regular", "solid", "light", "thin", "sharp-solid", "duotone", "brands"],
+          "description": "Icon style for Font Awesome icons only"
+        }
+      }
+    },
+    "Step": {
+      "attributes": {
+        "title": {
+          "type": "text",
+          "description": "The title is the primary text for the step and shows up next to the indicator"
+        },
+        "icon": {
+          "type": "searchable",
+          "options": [
+            "flag", "star", "heart", "home", "user", "settings", "search", "menu", "close", "check", "arrow-right", "arrow-left", "arrow-up", "arrow-down",
+            "plus", "minus", "edit", "delete", "save", "download", "upload", "share", "copy", "paste", "cut", "undo", "redo", "refresh", "sync"
+          ],
+          "description": "Font Awesome icon, Lucide icon, or SVG code"
+        },
+        "iconType": {
+          "type": "select",
+          "options": ["regular", "solid", "light", "thin", "sharp-solid", "duotone", "brands"],
+          "description": "Icon style for Font Awesome icons only"
+        },
+        "stepNumber": {
+          "type": "number",
+          "description": "The number of the step"
+        },
+        "titleSize": {
+          "type": "select",
+          "options": ["p", "h2", "h3"],
+          "description": "The size of the step titles"
+        }
+      }
+    },
+    "Steps": {
+      "attributes": {
+        "titleSize": {
+          "type": "select",
+          "options": ["p", "h2", "h3"],
+          "description": "The size of the step titles"
+        }
+      }
+    },
+    "ResponseField": {
+      "attributes": {
+        "name": {
+          "type": "text",
+          "required": true,
+          "description": "The name of the response value"
+        },
+        "type": {
+          "type": "text",
+          "required": true,
+          "description": "Expected type of the response value"
+        },
+        "default": {
+          "type": "text",
+          "description": "The default value"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Show 'required' beside the field name"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "description": "Whether a field is deprecated or not"
+        }
+      }
+    },
+    "ParamField": {
+      "attributes": {
+        "path": {
+          "type": "text",
+          "required": true,
+          "description": "Whether it is a query, path, body, or header parameter followed by the name"
+        },
+        "type": {
+          "type": "select",
+          "options": ["string", "number", "boolean", "object", "string[]", "number[]", "boolean[]"],
+          "required": true,
+          "description": "Expected type of the parameter's value"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Indicate whether the parameter is required"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "description": "Indicate whether the parameter is deprecated"
+        },
+        "default": {
+          "type": "text",
+          "description": "Default value used by the server if the request does not provide a value"
+        },
+        "placeholder": {
+          "type": "text",
+          "description": "Placeholder text for the input in the playground"
+        }
+      }
+    },
+    "Update": {
+      "attributes": {
+        "label": {
+          "type": "text",
+          "required": true,
+          "description": "Label for the update. Appears to the left of the update and creates an anchor link"
+        },
+        "description": {
+          "type": "text",
+          "description": "Description of the update. Appears below the label and tag"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags for the update. Shown as filters in the right side panel"
+        }
+      }
+    },
+    "Expandable": {
+      "attributes": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "description": "The name of the object you are showing"
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "description": "Set to true to show the component as open when the page loads"
+        }
+      }
+    },
+    "Frame": {
+      "attributes": {
+        "caption": {
+          "type": "text",
+          "description": "Optional caption text to show centered under your component"
+        }
+      }
+    },
+    "Columns": {
+      "attributes": {
+        "cols": {
+          "type": "number",
+          "description": "The number of columns per row"
+        }
+      }
+    }
+  }
+}
