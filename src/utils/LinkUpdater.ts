@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Link updater utilities for markdown files
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';

@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Mintlify language service
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 import { FilePathResolver } from './FilePathResolver';
 import { FileWatcher, FileChangeEvent } from './FileWatcher';

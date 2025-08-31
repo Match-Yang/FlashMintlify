@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Providers bootstrap functionality
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 import { InternalLinkCodeLensProvider } from './InternalLinkProviders';
 

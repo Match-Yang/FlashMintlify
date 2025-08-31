@@ -1,4 +1,10 @@
-// FlashMintlify - Fast and powerful Mintlify documentation development
+/**
+ * FlashMintlify - Fast and powerful Mintlify documentation development
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';

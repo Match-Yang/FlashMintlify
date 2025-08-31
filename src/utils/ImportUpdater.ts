@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Import statement updater utilities
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { FilePathResolver } from './FilePathResolver';

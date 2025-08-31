@@ -1,4 +1,11 @@
 
+/**
+ * FlashMintlify - Content formatter utilities
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 
 function formatContent(document: any) {

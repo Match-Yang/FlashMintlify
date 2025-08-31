@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - File import provider for CodeLens functionality
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ImportCalculator } from '../utils/ImportCalculator';

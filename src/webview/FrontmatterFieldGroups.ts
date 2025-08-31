@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Frontmatter field groups configuration
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import { SettingsField } from './SettingsPanel';
 
 export function getAllFrontmatterFieldGroups(existingValues: { [key: string]: string }, defaultTitle: string): { [groupName: string]: SettingsField[] } {

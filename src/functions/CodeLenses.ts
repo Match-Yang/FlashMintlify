@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - CodeLens providers for headings and components
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 import { createMintlifyComponentCodeLensProvider } from './MintlifyComponentCodeLens';
 

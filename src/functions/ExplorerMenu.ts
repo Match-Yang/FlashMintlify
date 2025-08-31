@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Explorer context menu functionality
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';

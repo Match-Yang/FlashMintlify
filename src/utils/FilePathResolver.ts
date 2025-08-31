@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - File path resolution utilities
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';

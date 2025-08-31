@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Settings panel webview functionality
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 
 export interface SettingsField {

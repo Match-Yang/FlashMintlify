@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Frontmatter management functionality
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode'
 import * as path from 'path'
 import { FrontmatterSetterPanel } from '../webview/FrontmatterSetterPanel'

@@ -1,3 +1,10 @@
+/**
+ * FlashMintlify - Completion providers for slash commands and components
+ *
+ * @author Match-Yang(OliverYeung)
+ * @email oliver.yeung.me@gmail.com
+ * @license MIT
+ */
 import * as vscode from 'vscode';
 
 
