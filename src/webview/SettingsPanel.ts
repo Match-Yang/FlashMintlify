@@ -80,7 +80,7 @@ export abstract class SettingsPanel {
         vscode.window.showErrorMessage(`Settings Panel error: ${message.message}`);
         break;
       case 'close':
-        this._panel.dispose();
+        this.dispose();
         break;
     }
   }
@@ -182,7 +182,7 @@ export abstract class SettingsPanel {
             margin-top: 20px;
             display: flex;
             gap: 10px;
-            justify-content: flex-end;
+            justify-content: flex-start;
         }
         .button {
             padding: 8px 16px;
@@ -252,9 +252,9 @@ export abstract class SettingsPanel {
         <h2>${this.getTitle()}</h2>
     </div>
     
-    <div class="search-container">
+    <div class="search-container" style="display:none">
         <input type="text" id="field-search" class="property-input" placeholder="Search fields..."
-               oninput="filterFields(this.value)" style="margin-bottom: 15px;">
+               oninput="filterFields(this.value)" style="margin-bottom: 15px; display:none;">
     </div>
 
     <div id="fields">

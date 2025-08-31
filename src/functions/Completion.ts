@@ -285,6 +285,20 @@ class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvide
 				insertText: ''
 			},
 			// {
+			// 	label: '🌐 Open page preview',
+			// 	detail: 'Open current page in Mintlify dev server',
+			// 	description: 'Open http://localhost:<port>/<internalPath> either inside VS Code or in browser',
+			// 	command: 'flashMintlify.preview.open',
+			// 	insertText: ''
+			// },
+			{
+				label: '⚙️ Set preview options',
+				detail: 'Configure preview port and mode',
+				description: 'Choose internal webview or external browser and set port',
+				command: 'flashMintlify.preview.options',
+				insertText: ''
+			},
+			// {
 			// 	label: '🔍 Calculate Import References',
 			// 	detail: 'Calculate import references',
 			// 	description: 'Analyze and display file import relationships',

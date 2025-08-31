@@ -5,6 +5,7 @@ import { LinkUpdater } from './LinkUpdater';
 import { ImportUpdater } from './ImportUpdater';
 import { NavigationUpdater } from './NavigationUpdater';
 import { ProgressReporter, UpdateResult, createEmptyResult, mergeResults, showResultSummary } from './ProgressReporter';
+import { PreviewPanel } from '../webview/PreviewPanel';
 
 /**
  * Mintlify Language Service
@@ -36,6 +37,9 @@ export class MintlifyLanguageService {
                 this.updateConfiguration();
             }
         });
+
+        // 监听编辑器切换，实现自动预览更新（添加防抖逻辑避免频繁触发）
+        vscode.window.onDidChangeActiveTextEditor(this.handleActiveEditorChange.bind(this));
     }
 
     /**
@@ -327,6 +331,61 @@ export class MintlifyLanguageService {
         } catch (error) {
             console.error('手动处理文件夹重命名时出错:', error);
             vscode.window.showErrorMessage(`处理文件夹重命名时出错: ${error instanceof Error ? error.message : '未知错误'}`);
+        }
+    }
+
+    private lastActiveFile: string | undefined;
+    private previewUpdateTimeout: NodeJS.Timeout | undefined;
+
+    /**
+     * 处理活动编辑器变更，实现自动预览更新（带防抖逻辑）
+     */
+    private async handleActiveEditorChange(editor: vscode.TextEditor | undefined): Promise<void> {
+        if (!this.isEnabled || !editor) return;
+
+        const doc = editor.document;
+        const currentFile = doc.uri.fsPath;
+        const isMarkdownFile = doc.languageId === 'markdown' || doc.languageId === 'mdx';
+
+        // 防抖逻辑：只有当文件真正切换时才触发预览更新
+        if (isMarkdownFile && currentFile !== this.lastActiveFile) {
+            this.lastActiveFile = currentFile;
+
+            // 清除之前的定时器
+            if (this.previewUpdateTimeout) {
+                clearTimeout(this.previewUpdateTimeout);
+            }
+
+            // 设置防抖延迟，避免快速切换时频繁更新
+            this.previewUpdateTimeout = setTimeout(() => {
+                const cfg = vscode.workspace.getConfiguration('flashMintlify');
+                const mode = cfg.get<'beside' | 'fullscreen' | 'browser'>('preview.mode', 'browser');
+
+                // 只有在 beside 模式下且已有预览面板时才自动更新预览
+                if (mode === 'beside' && PreviewPanel.currentPanel) {
+                    // 直接更新预览内容，而不是重新执行整个预览命令
+                    try {
+                        const filePath = doc.uri.fsPath;
+                        const root = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+
+                        if (root) {
+                            const path = require('path');
+                            const rel = path.relative(root, filePath).replace(/\\/g, '/').replace(/\.(md|mdx)$/i, '');
+                            const internalPath = '/' + rel;
+                            const configuredPort = cfg.get<number>('preview.port', 3000);
+                            const targetUrl = `http://localhost:${configuredPort}${internalPath}`;
+
+                            PreviewPanel.currentPanel.update(targetUrl);
+                        } else {
+                            vscode.commands.executeCommand('flashMintlify.preview.open');
+                        }
+                    } catch (error) {
+                        console.error('MintlifyLanguageService: 自动更新预览失败:', error);
+                        // 如果直接更新失败，回退到命令方式
+                        vscode.commands.executeCommand('flashMintlify.preview.open');
+                    }
+                }
+            }, 100); // 100ms 防抖延迟
         }
     }
 }

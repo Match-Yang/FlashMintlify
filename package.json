@@ -2,7 +2,7 @@
     "name": "flash-mintlify",
     "displayName": "FlashMintlify",
     "description": "The ultimate VS Code extension for Mintlify documentation development with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "publisher": "FlashDocs",
     "private": true,
     "license": "MIT",
@@ -53,6 +53,17 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable FlashMintlify Language Service for file reference analysis and intelligent features"
+                },
+                "flashMintlify.preview.port": {
+                    "type": "number",
+                    "default": 3000,
+                    "description": "Port of the running 'mint dev' preview server"
+                },
+                "flashMintlify.preview.mode": {
+                    "type": "string",
+                    "enum": ["beside", "fullscreen", "browser"],
+                    "default": "browser",
+                    "description": "How to open preview: 'beside' opens beside editor, 'fullscreen' opens in new tab, 'browser' opens in system browser"
                 }
             }
         },
@@ -69,6 +80,18 @@
             },
 
 
+            {
+                "command": "flashMintlify.preview.open",
+                "title": "Open page preview",
+                "category": "FlashMintlify Preview",
+                "icon": "$(globe)"
+            },
+            {
+                "command": "flashMintlify.preview.options",
+                "title": "Set preview options",
+                "category": "FlashMintlify Preview",
+                "icon": "$(gear)"
+            },
             {
                 "command": "flashMintlify.explorer.copyInternalLink",
                 "title": "Copy internal link",
@@ -117,6 +140,13 @@
             }
         ],
         "menus": {
+                "editor/title": [
+                    {
+                        "command": "flashMintlify.preview.open",
+                        "when": "resourceLangId == markdown || resourceLangId == mdx",
+                        "group": "navigation@99"
+                    }
+                ],
 
             "explorer/context": [
                 {
