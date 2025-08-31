@@ -10,6 +10,9 @@ Let more people discover and use the more efficient Mintlify writing experience!
 
 ## ✨ Key Features
 
+### Preview in editor
+
+![preview_in_editor](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/preview_in_editor.gif)
 
 ### 🖼️ Visual Page Options Editor
 
