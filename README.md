@@ -55,7 +55,7 @@ Intelligent language service that automatically maintains file references:
 - **Auto-Update Imports**: Updates MDX imports when files are moved or renamed
 - **Auto-Update Links**: Updates internal links when files are moved or renamed
 - **Bulk Operations**: Handles folder renames with automatic reference updates
-- **Navigation Sync**: Updates `mint.json` navigation when files are moved
+- **Navigation Sync**: Updates `docs.json` navigation when files are moved
 - **Real-time Analysis**: Tracks file dependencies across your documentation
 
 ![update_references](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/update_references.gif)
@@ -79,7 +79,7 @@ Intelligent language service that automatically maintains file references:
 ## 🛠️ System Requirements
 
 - **VS Code**: 1.73.0 or higher
-- **Project Structure**: Mintlify project with `mint.json` configuration
+- **Project Structure**: Mintlify project with `docs.json` configuration
 - **File Types**: `.md`, `.mdx`, `.json`, `.yaml`, `.yml` files
 
 ## 🤝 Contributing

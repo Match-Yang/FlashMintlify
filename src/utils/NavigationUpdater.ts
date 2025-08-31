@@ -4,7 +4,7 @@ import { FilePathResolver } from './FilePathResolver';
 import { UpdateResult, createEmptyResult } from './ProgressReporter';
 
 /**
- * mint.json导航更新器
+ * docs.json导航更新器
  * 处理Mintlify配置文件中的页面路径更新
  */
 export class NavigationUpdater {
@@ -15,50 +15,55 @@ export class NavigationUpdater {
     }
 
     /**
-     * 更新mint.json中指向指定文件的页面路径
+     * 更新docs.json中指向指定文件的页面路径
      */
     async updateNavigationForFile(
-        oldFilePath: string, 
+        oldFilePath: string,
         newFilePath: string,
         progressCallback?: (message: string) => void
     ): Promise<UpdateResult> {
         const result = createEmptyResult();
 
         try {
-            const mintJsonPath = this.pathResolver.getMintJsonPath();
-            
-            if (!this.pathResolver.hasMintJson()) {
-                progressCallback?.('未找到mint.json文件，跳过导航更新');
+            const docsJsonPath = this.pathResolver.getDocsJsonPath();
+
+            if (!this.pathResolver.hasDocsJson()) {
+                progressCallback?.('未找到docs.json文件，跳过导航更新');
                 return result;
             }
 
-            progressCallback?.('正在更新mint.json中的导航路径...');
+            progressCallback?.('正在更新docs.json中的导航路径...');
 
             // 计算旧路径和新路径的页面格式（不包含扩展名）
             const oldPagePath = this.pathResolver.toInternalLinkPath(oldFilePath).substring(1); // 移除开头的/
             const newPagePath = this.pathResolver.toInternalLinkPath(newFilePath).substring(1);
 
-            // 读取mint.json
-            const content = fs.readFileSync(mintJsonPath, 'utf8');
-            const mintConfig = JSON.parse(content);
+            // 读取docs.json
+            const content = fs.readFileSync(docsJsonPath, 'utf8');
+            const docsConfig = JSON.parse(content);
+
+            // 确保存在navigation属性
+            if (!docsConfig.navigation) {
+                docsConfig.navigation = {};
+            }
 
             // 更新导航配置
             let navigationUpdated = 0;
-            this.updateNavigationRecursive(mintConfig, oldPagePath, newPagePath, (count) => {
+            this.updateNavigationRecursive(docsConfig.navigation, oldPagePath, newPagePath, (count) => {
                 navigationUpdated += count;
             });
 
             // 如果有更新，写入文件
             if (navigationUpdated > 0) {
-                const updatedContent = JSON.stringify(mintConfig, null, 2);
-                fs.writeFileSync(mintJsonPath, updatedContent, 'utf8');
+                const updatedContent = JSON.stringify(docsConfig, null, 2);
+                fs.writeFileSync(docsJsonPath, updatedContent, 'utf8');
                 result.navigationUpdated = navigationUpdated;
-                result.updatedFiles.push('mint.json');
-                console.log(`NavigationUpdater: Updated ${navigationUpdated} navigation paths in mint.json`);
+                result.updatedFiles.push('docs.json');
+                console.log(`NavigationUpdater: Updated ${navigationUpdated} navigation paths in docs.json`);
             }
 
         } catch (error) {
-            const errorMsg = `更新mint.json导航时出错: ${error instanceof Error ? error.message : '未知错误'}`;
+            const errorMsg = `更新docs.json导航时出错: ${error instanceof Error ? error.message : '未知错误'}`;
             result.errors.push(errorMsg);
             console.error(errorMsg, error);
         }
@@ -123,18 +128,23 @@ export class NavigationUpdater {
     ): Promise<UpdateResult> {
         const result = createEmptyResult();
 
-        if (!this.pathResolver.hasMintJson()) {
-            progressCallback?.('未找到mint.json文件，跳过导航更新');
+        if (!this.pathResolver.hasDocsJson()) {
+            progressCallback?.('未找到docs.json文件，跳过导航更新');
             return result;
         }
 
         try {
-            const mintJsonPath = this.pathResolver.getMintJsonPath();
-            progressCallback?.('正在批量更新mint.json中的导航路径...');
+            const docsJsonPath = this.pathResolver.getDocsJsonPath();
+            progressCallback?.('正在批量更新docs.json中的导航路径...');
 
-            // 读取mint.json
-            const content = fs.readFileSync(mintJsonPath, 'utf8');
-            const mintConfig = JSON.parse(content);
+            // 读取docs.json
+            const content = fs.readFileSync(docsJsonPath, 'utf8');
+            const docsConfig = JSON.parse(content);
+
+            // 确保存在navigation属性
+            if (!docsConfig.navigation) {
+                docsConfig.navigation = {};
+            }
 
             let totalNavigationUpdated = 0;
 
@@ -146,22 +156,22 @@ export class NavigationUpdater {
                 const oldPagePath = this.pathResolver.toInternalLinkPath(oldPath).substring(1);
                 const newPagePath = this.pathResolver.toInternalLinkPath(newPath).substring(1);
 
-                this.updateNavigationRecursive(mintConfig, oldPagePath, newPagePath, (count) => {
+                this.updateNavigationRecursive(docsConfig.navigation, oldPagePath, newPagePath, (count) => {
                     totalNavigationUpdated += count;
                 });
             }
 
             // 如果有更新，写入文件
             if (totalNavigationUpdated > 0) {
-                const updatedContent = JSON.stringify(mintConfig, null, 2);
-                fs.writeFileSync(mintJsonPath, updatedContent, 'utf8');
+                const updatedContent = JSON.stringify(docsConfig, null, 2);
+                fs.writeFileSync(docsJsonPath, updatedContent, 'utf8');
                 result.navigationUpdated = totalNavigationUpdated;
-                result.updatedFiles.push('mint.json');
-                console.log(`NavigationUpdater: Batch updated ${totalNavigationUpdated} navigation paths in mint.json`);
+                result.updatedFiles.push('docs.json');
+                console.log(`NavigationUpdater: Batch updated ${totalNavigationUpdated} navigation paths in docs.json`);
             }
 
         } catch (error) {
-            const errorMsg = `批量更新mint.json导航时出错: ${error instanceof Error ? error.message : '未知错误'}`;
+            const errorMsg = `批量更新docs.json导航时出错: ${error instanceof Error ? error.message : '未知错误'}`;
             result.errors.push(errorMsg);
             console.error(errorMsg, error);
         }
@@ -170,23 +180,26 @@ export class NavigationUpdater {
     }
 
     /**
-     * 查找mint.json中指向指定文件的所有页面路径
+     * 查找docs.json中指向指定文件的所有页面路径
      */
     findNavigationReferencesToFile(targetFilePath: string): Array<{ path: string; location: string }> {
         const references: Array<{ path: string; location: string }> = [];
-        
+
         try {
-            if (!this.pathResolver.hasMintJson()) {
+            if (!this.pathResolver.hasDocsJson()) {
                 return references;
             }
 
-            const mintJsonPath = this.pathResolver.getMintJsonPath();
-            const content = fs.readFileSync(mintJsonPath, 'utf8');
-            const mintConfig = JSON.parse(content);
+            const docsJsonPath = this.pathResolver.getDocsJsonPath();
+            const content = fs.readFileSync(docsJsonPath, 'utf8');
+            const docsConfig = JSON.parse(content);
 
             const targetPagePath = this.pathResolver.toInternalLinkPath(targetFilePath).substring(1);
-            
-            this.findNavigationReferencesRecursive(mintConfig, targetPagePath, references, 'root');
+
+            // 在navigation属性中查找引用
+            if (docsConfig.navigation) {
+                this.findNavigationReferencesRecursive(docsConfig.navigation, targetPagePath, references, 'navigation');
+            }
 
         } catch (error) {
             console.error('查找导航引用时出错:', error);
@@ -242,29 +255,33 @@ export class NavigationUpdater {
     }
 
     /**
-     * 验证mint.json的格式是否正确
+     * 验证docs.json的格式是否正确
      */
-    validateMintJson(): { isValid: boolean; errors: string[] } {
+    validateDocsJson(): { isValid: boolean; errors: string[] } {
         const errors: string[] = [];
-        
+
         try {
-            if (!this.pathResolver.hasMintJson()) {
-                errors.push('mint.json文件不存在');
+            if (!this.pathResolver.hasDocsJson()) {
+                errors.push('docs.json文件不存在');
                 return { isValid: false, errors };
             }
 
-            const mintJsonPath = this.pathResolver.getMintJsonPath();
-            const content = fs.readFileSync(mintJsonPath, 'utf8');
-            
+            const docsJsonPath = this.pathResolver.getDocsJsonPath();
+            const content = fs.readFileSync(docsJsonPath, 'utf8');
+
             try {
-                JSON.parse(content);
+                const config = JSON.parse(content);
+                // 验证是否有navigation属性
+                if (!config.navigation) {
+                    errors.push('docs.json缺少navigation属性');
+                }
             } catch (parseError) {
-                errors.push(`mint.json格式错误: ${parseError instanceof Error ? parseError.message : '未知错误'}`);
+                errors.push(`docs.json格式错误: ${parseError instanceof Error ? parseError.message : '未知错误'}`);
                 return { isValid: false, errors };
             }
 
         } catch (error) {
-            errors.push(`读取mint.json时出错: ${error instanceof Error ? error.message : '未知错误'}`);
+            errors.push(`读取docs.json时出错: ${error instanceof Error ? error.message : '未知错误'}`);
             return { isValid: false, errors };
         }
 

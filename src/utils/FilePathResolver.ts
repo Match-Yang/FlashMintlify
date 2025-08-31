@@ -138,6 +138,20 @@ export class FilePathResolver {
     }
 
     /**
+     * 获取docs.json文件路径
+     */
+    getDocsJsonPath(): string {
+        return path.join(this.workspaceRoot, 'docs.json');
+    }
+
+    /**
+     * 检查docs.json是否存在
+     */
+    hasDocsJson(): boolean {
+        return fs.existsSync(this.getDocsJsonPath());
+    }
+
+    /**
      * 规范化路径分隔符为正斜杠
      */
     normalizePath(filePath: string): string {

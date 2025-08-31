@@ -53,9 +53,9 @@ export class MintlifyLanguageService {
 
         console.log('MintlifyLanguageService: 正在启动...');
 
-        // 检查是否有mint.json文件
-        if (!this.pathResolver.hasMintJson()) {
-            console.log('MintlifyLanguageService: 未找到mint.json文件，Language Service将以有限功能运行');
+        // 检查是否有docs.json文件
+        if (!this.pathResolver.hasDocsJson()) {
+            console.log('MintlifyLanguageService: 未找到docs.json文件，Language Service将以有限功能运行');
         }
 
         // 开始监听文件变更
@@ -371,7 +371,9 @@ export class MintlifyLanguageService {
                         if (root) {
                             const path = require('path');
                             const rel = path.relative(root, filePath).replace(/\\/g, '/').replace(/\.(md|mdx)$/i, '');
-                            const internalPath = '/' + rel;
+
+                            // Special case: index.mdx in root directory should render as localhost:port, not localhost:port/index
+                            const internalPath = rel === 'index' ? '/' : '/' + rel;
                             const configuredPort = cfg.get<number>('preview.port', 3000);
                             const targetUrl = `http://localhost:${configuredPort}${internalPath}`;
 

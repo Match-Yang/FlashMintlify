@@ -11,7 +11,7 @@ FlashMintlify Language Service 已集成到 FlashMintlify 扩展中，无需单�
 **重要**: 插件会自动使用当前 VS Code 工作区，无需手动配置路径。
 
 1. 在 VS Code 中打开你的 Mintlify 文档文件夹
-2. 确保根目录下有 `mint.json` 文件
+2. 确保根目录下有 `docs.json` 文件
 3. 插件会自动检测并开始工作
 
 ### 3. 验证插件状态

@@ -19,33 +19,33 @@ import { PreviewPanel } from './webview/PreviewPanel';
 import { PreviewSettingsPanel } from './webview/PreviewSettingsPanel';
 
 /**
- * Check if the workspace root contains a mint.json file
+ * Check if the workspace root contains a docs.json file
  */
-function checkMintJsonExists(): boolean {
+function checkDocsJsonExists(): boolean {
   const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders || workspaceFolders.length === 0) {
     return false;
   }
 
   const rootPath = workspaceFolders[0].uri.fsPath;
-  const mintJsonPath = path.join(rootPath, 'mint.json');
-  
+  const docsJsonPath = path.join(rootPath, 'docs.json');
+
   try {
-    return fs.existsSync(mintJsonPath);
+    return fs.existsSync(docsJsonPath);
   } catch (error) {
-    console.error('Error checking mint.json existence:', error);
+    console.error('Error checking docs.json existence:', error);
     return false;
   }
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  // Check if the workspace root contains a mint.json file, if not, do not activate the plugin features
-  if (!checkMintJsonExists()) {
-    console.log('FlashMintlify: mint.json not found in workspace root, extension features disabled');
+  // Check if the workspace root contains a docs.json file, if not, do not activate the plugin features
+  if (!checkDocsJsonExists()) {
+    console.log('FlashMintlify: docs.json not found in workspace root, extension features disabled');
     return;
   }
 
-  console.log('FlashMintlify: mint.json found, activating extension features');
+  console.log('FlashMintlify: docs.json found, activating extension features');
   const settingChangedListenerProvider = createSettingChangedListenerProvider();
 
   // Register AI command
@@ -69,7 +69,9 @@ export async function activate(context: vscode.ExtensionContext) {
       return;
     }
     const rel = path.relative(root, filePath).replace(/\\/g, '/').replace(/\.(md|mdx)$/i, '');
-    const internalPath = '/' + rel;
+
+    // Special case: index.mdx in root directory should render as localhost:port, not localhost:port/index
+    const internalPath = rel === 'index' ? '/' : '/' + rel;
 
     // Determine port and mode
     const cfg = vscode.workspace.getConfiguration('flashMintlify');
