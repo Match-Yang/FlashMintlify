@@ -2,7 +2,7 @@
 
 > **Life is hard, writing should be easy!**
 
-A super powerful extension that’ll make your Mintlify writing fly. It comes with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.
+A super powerful extension that’ll make your [Mintlify](https://mintlify.com/) writing fly. It comes with intelligent component completion, automatic file reference tracking, smart link validation, and enhanced MDX editing experience.
 
 🌟 Like this tool? Your star is my biggest motivation to keep improving!  
 👉 [Click here to give FlashMintlify a star!](https://github.com/Match-Yang/FlashMintlify)  
@@ -28,11 +28,11 @@ Just type "/" to trigger the slash commands and get the following features:
 ### 🚀 Intelligent Component Completion
 You don't need to remember all the rules!
 
-You only need to type "<" to trigger the component completion.
+Just type "<" to trigger the component completion.
 
 ![components_completion](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/components_completion.gif)
 
-You only need to type "```" to trigger the code block completion.
+Just type "```" to trigger the code block completion.
 
 ![code_block_completion](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/code_block_completion.gif)
 
@@ -76,17 +76,6 @@ Intelligent language service that automatically maintains file references:
 ![generate_and_copy_heading_anchor](https://raw.githubusercontent.com/Match-Yang/FlashMintlify/main/images/generate_and_copy_heading_anchor.gif)
 
 
-## ⚙️ Configuration
-
-```json
-{
-  "flashMintlify.enableLanguageService": true
-}
-```
-
-### Settings
-- `flashMintlify.enableLanguageService`: Enable/disable automatic file reference tracking and updates
-
 ## 🛠️ System Requirements
 
 - **VS Code**: 1.73.0 or higher
@@ -97,9 +86,9 @@ Intelligent language service that automatically maintains file references:
 
 We welcome contributions! This extension is open source and available on GitHub.
 
-- 🐛 **Report Issues**: Found a bug? Let us know!
-- 💡 **Feature Requests**: Have an idea? We'd love to hear it!
-- 🔧 **Pull Requests**: Want to contribute code? Awesome!
+- 🐛 [**Report Issues**](https://github.com/Match-Yang/FlashMintlify/issues/new): Found a bug? Let us know!
+- 💡 [**Feature Requests**](https://github.com/Match-Yang/FlashMintlify/issues/new): Have an idea? We'd love to hear it!
+- 🔧 [**Pull Requests**](https://github.com/Match-Yang/FlashMintlify/pulls): Want to contribute code? Awesome!
 
 ## 📄 License
 

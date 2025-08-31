@@ -101,7 +101,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
   }
 
   protected getTitle(): string {
-    return 'Frontmatter Settings';
+    return 'Set page options';
   }
 
   // 重写HTML生成方法以支持分组

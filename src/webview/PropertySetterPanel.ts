@@ -125,7 +125,7 @@ export class PropertySetterPanel {
         path.join(__dirname, '..', 'src', 'config', 'mintlify-components.json'),
         path.join(__dirname, 'config', 'mintlify-components.json')
       ];
-      
+
       let configContent: string | null = null;
       for (const configPath of possiblePaths) {
         try {
@@ -137,7 +137,7 @@ export class PropertySetterPanel {
           // 继续尝试下一个路径
         }
       }
-      
+
       if (configContent) {
         this._config = JSON.parse(configContent);
       }
@@ -401,7 +401,7 @@ export class PropertySetterPanel {
 
     const document = editor.document;
     const componentText = document.getText(range);
-    
+
     // 如果值为空字符串，表示删除属性
     if (attrValue === '') {
       const newText = this.removeAttribute(componentText, attrName);
@@ -424,7 +424,7 @@ export class PropertySetterPanel {
     }
 
     const newText = this.updateAttribute(componentText, attrName, formattedValue);
-    
+
     await editor.edit(editBuilder => {
       editBuilder.replace(range, newText);
     });
@@ -580,20 +580,34 @@ export class PropertySetterPanel {
             margin-right: 6px;
             color: var(--vscode-symbolIcon-colorForeground);
         }
-        .buttons {
-            margin-top: 15px;
-            text-align: center;
+        /* Color input styles */
+        .color-input {
             display: flex;
+            align-items: center;
             gap: 8px;
         }
+        input[type="color"].color-picker {
+            width: 32px;
+            height: 28px;
+            padding: 0;
+            border: 1px solid var(--vscode-input-border);
+            background: transparent;
+            cursor: pointer;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            padding-left: 10px;
+        }
         .button {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 3px;
+            border-radius: 2px;
             cursor: pointer;
             font-family: var(--vscode-font-family);
-            font-size: 0.9em;
-            flex: 1;
+            font-size: var(--vscode-font-size);
         }
         .button-primary {
             background-color: var(--vscode-button-background);
@@ -619,13 +633,13 @@ export class PropertySetterPanel {
     <div class="header">
         <h2>Set Properties for &lt;${componentName}&gt;</h2>
     </div>
-    
+
     <div id="properties">
-        ${Object.entries(componentConfig.attributes).map(([attrName, attrConfig]) => 
+        ${Object.entries(componentConfig.attributes).map(([attrName, attrConfig]) =>
           this.generatePropertyHtml(attrName, attrConfig, existingAttributes[attrName])
         ).join('')}
     </div>
-    
+
     <div class="buttons">
         <button class="button button-primary" onclick="saveAttributes()">Save</button>
         <button class="button button-secondary" onclick="closePanel()">Close</button>
@@ -690,9 +704,14 @@ export class PropertySetterPanel {
                             placeholder="Enter number">`;
         break;
       case 'color':
-        inputHtml = `<input type="text" class="property-input" id="${attrName}" value="${currentValue || ''}"
-                            oninput="handleRealTimeInput('${attrName}', '${attrConfig.type}', this)"
-                            placeholder="#FF5733" pattern="^#[0-9A-Fa-f]{6}$">`;
+        inputHtml = `
+          <div class="color-input">
+            <input type="color" class="color-picker" id="${attrName}-picker" value="${(currentValue && /^#[0-9A-Fa-f]{6}$/.test(currentValue) ? currentValue : '#000000')}"
+                   onchange="handleColorPickerChange('${attrName}', this)">
+            <input type="text" class="property-input" id="${attrName}" value="${currentValue || ''}"
+                   oninput="handleColorTextChange('${attrName}', this)"
+                   placeholder="#FF5733" pattern="^#[0-9A-Fa-f]{6}$">
+          </div>`;
         break;
       default:
         inputHtml = `<input type="text" class="property-input" id="${attrName}" value="${currentValue || ''}"
@@ -779,6 +798,25 @@ export class PropertySetterPanel {
         window.pendingAttributes[attrName] = { value, type: attrType };
       }
 
+      // 颜色选择器与文本输入联动
+      function handleColorPickerChange(attrName, pickerEl) {
+        const textInput = document.getElementById(attrName);
+        if (textInput) {
+          textInput.value = pickerEl.value;
+        }
+        handleRealTimeInput(attrName, 'color', pickerEl);
+      }
+
+      function handleColorTextChange(attrName, textEl) {
+        const picker = document.getElementById(attrName + '-picker');
+        const val = textEl.value.trim();
+        if (/^#[0-9A-Fa-f]{6}$/.test(val) && picker) {
+          picker.value = val;
+        }
+        handleRealTimeInput(attrName, 'color', textEl);
+      }
+
+
       function saveAttributes() {
         // 收集所有当前的属性值
         const attributes = {};
@@ -787,25 +825,38 @@ export class PropertySetterPanel {
         document.querySelectorAll('.property-group').forEach(group => {
           const attrName = group.getAttribute('data-attr');
           if (attrName) {
-            const input = group.querySelector('input, select');
-            if (input && input.value && input.value.trim() !== '') {
-              // 确定属性类型
-              let attrType = 'text';
-              if (input.type === 'number') {
+            // 优先获取与属性同名的输入（文本或选择框）
+            const explicitInput = group.querySelector('input#' + attrName + ', select#' + attrName);
+            const colorInput = group.querySelector('input#' + attrName + '-picker');
+
+            let value = '';
+            let attrType = 'text';
+
+            if (explicitInput && explicitInput.value && explicitInput.value.trim() !== '') {
+              value = explicitInput.value;
+              if (explicitInput.type === 'number') {
                 attrType = 'number';
-              } else if (input.tagName === 'SELECT') {
+              } else if (explicitInput.tagName === 'SELECT') {
                 attrType = 'select';
                 // 检查是否是布尔类型
-                const options = Array.from(input.options).map(opt => opt.value);
+                const options = Array.from(explicitInput.options).map(opt => opt.value);
                 if (options.includes('true') && options.includes('false')) {
                   attrType = 'boolean';
                 }
+              } else if (explicitInput.type === 'color') {
+                attrType = 'color';
               } else if (attrName === 'icon') {
                 attrType = 'searchable';
               }
+            } else if (colorInput && colorInput.value) {
+              // 如果文本为空但存在颜色选择器，使用颜色选择器的值
+              value = colorInput.value;
+              attrType = 'color';
+            }
 
+            if (value && value.trim() !== '') {
               attributes[attrName] = {
-                value: input.value,
+                value,
                 type: attrType
               };
             }
