@@ -93,6 +93,14 @@ We welcome contributions! This extension is open source and available on GitHub.
 - 💡 [**Feature Requests**](https://github.com/Match-Yang/FlashMintlify/issues/new): Have an idea? We'd love to hear it!
 - 🔧 [**Pull Requests**](https://github.com/Match-Yang/FlashMintlify/pulls): Want to contribute code? Awesome!
 
+## Support & Feedback
+
+If you have any questions or feedback, please feel free to reach out to me.
+
+- Email: oliver.yeung.me@gmail.com
+- X: [@FlashDocssss](https://x.com/FlashDocssss)
+- Discord: [FlashDocs](https://discord.gg/JCbDKFPKH3)
+
 ## 📄 License
 
 MIT License - see LICENSE file for details.

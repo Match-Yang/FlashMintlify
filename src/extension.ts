@@ -44,9 +44,44 @@ function checkDocsJsonExists(): boolean {
   }
 }
 
+/**
+ * Set the context key to indicate if this is a Mintlify project
+ */
+async function setMintlifyProjectContext(isMintlifyProject: boolean): Promise<void> {
+  await vscode.commands.executeCommand('setContext', 'flashMintlify.isMintlifyProject', isMintlifyProject);
+}
+
 export async function activate(context: vscode.ExtensionContext) {
-  // Check if the workspace root contains a docs.json file, if not, do not activate the plugin features
-  if (!checkDocsJsonExists()) {
+  // Check if the workspace root contains a docs.json file
+  const isMintlifyProject = checkDocsJsonExists();
+
+  // Set the context key to control UI visibility
+  await setMintlifyProjectContext(isMintlifyProject);
+
+  // Watch for docs.json changes to dynamically enable/disable features
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (workspaceFolders && workspaceFolders.length > 0) {
+    const rootPath = workspaceFolders[0].uri.fsPath;
+    const docsJsonPattern = new vscode.RelativePattern(rootPath, 'docs.json');
+    const watcher = vscode.workspace.createFileSystemWatcher(docsJsonPattern);
+
+    watcher.onDidCreate(async () => {
+      console.log('FlashMintlify: docs.json created, enabling extension features');
+      await setMintlifyProjectContext(true);
+      vscode.window.showInformationMessage('FlashMintlify: Mintlify project detected, extension features enabled');
+    });
+
+    watcher.onDidDelete(async () => {
+      console.log('FlashMintlify: docs.json deleted, disabling extension features');
+      await setMintlifyProjectContext(false);
+      vscode.window.showWarningMessage('FlashMintlify: docs.json not found, extension features disabled');
+    });
+
+    context.subscriptions.push(watcher);
+  }
+
+  // If not a Mintlify project, do not activate the plugin features
+  if (!isMintlifyProject) {
     console.log('FlashMintlify: docs.json not found in workspace root, extension features disabled');
     return;
   }
