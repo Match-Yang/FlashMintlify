@@ -9,6 +9,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { PropertySetterPanel } from '../webview/PropertySetterPanel';
+import { Analytics } from '../utils/analytics';
+
 
 interface ComponentAttribute {
   type: string;
@@ -70,7 +72,7 @@ class MintlifyComponentCodeLensProvider implements vscode.CodeLensProvider {
 
     const codeLenses: vscode.CodeLens[] = [];
     const text = document.getText();
-    
+
     // 匹配Mintlify组件标签 (支持自闭合和开放标签)
     const componentRegex = /<(\w+)([^>]*?)(?:\s*\/?>|>)/g;
     let match;
@@ -78,7 +80,7 @@ class MintlifyComponentCodeLensProvider implements vscode.CodeLensProvider {
     while ((match = componentRegex.exec(text)) !== null) {
       const componentName = match[1];
       const attributesText = match[2];
-      
+
       // 检查是否是Mintlify组件
       if (this.config.components[componentName]) {
         const startPos = document.positionAt(match.index);
@@ -105,7 +107,7 @@ class MintlifyComponentCodeLensProvider implements vscode.CodeLensProvider {
 
   private parseAttributes(attributesText: string): { [key: string]: string } {
     const attributes: { [key: string]: string } = {};
-    
+
     // 匹配属性：name="value" 或 name={value} 或 name (布尔属性)
     const attrRegex = /(\w+)(?:=(?:"([^"]*)"|{([^}]*)}|([^\s>]+)))?/g;
     let match;
@@ -134,7 +136,7 @@ async function updateComponentAttribute(range: vscode.Range, attrName: string, a
 
   const document = editor.document;
   const componentText = document.getText(range);
-  
+
   // 如果值为空字符串，表示删除属性
   if (attrValue === '') {
     const newText = removeAttribute(componentText, attrName);
@@ -158,7 +160,7 @@ async function updateComponentAttribute(range: vscode.Range, attrName: string, a
   }
 
   const newText = updateAttribute(componentText, attrName, formattedValue);
-  
+
   await editor.edit(editBuilder => {
     editBuilder.replace(range, newText);
   });
@@ -208,6 +210,7 @@ function createMintlifyComponentCodeLensProvider(extensionUri?: vscode.Uri) {
   const setAttributesCommand = vscode.commands.registerCommand(
     'flashMintlify.component.setAttributes',
     (componentName: string, range: vscode.Range, existingAttributes: { [key: string]: string }) => {
+      try { Analytics.track('codelens.setAttributes'); } catch {}
       if (extensionUri) {
         PropertySetterPanel.createOrShow(extensionUri, componentName, range, existingAttributes);
       } else {

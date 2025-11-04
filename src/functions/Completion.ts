@@ -8,18 +8,24 @@
 import * as vscode from 'vscode';
 
 
+
+function labelToFeature(label: string): string {
+  const norm = label.toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
+  return `slash.${norm}`;
+}
+
 // CompletionItemProvider for slash commands
 class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvider {
 	provideCompletionItems(
-		document: vscode.TextDocument, 
-		position: vscode.Position, 
+		document: vscode.TextDocument,
+		position: vscode.Position,
 		token: vscode.CancellationToken,
 		context: vscode.CompletionContext
 	): Thenable<vscode.CompletionItem[]> {
-		
+
 		const line = document.lineAt(position.line);
 		const prefix = line.text.substring(0, position.character);
-		
+
 		// Only trigger slash commands at line start or after whitespace
 		if (!prefix.trim().endsWith('/')) {
 			return Promise.resolve([]);
@@ -30,29 +36,29 @@ class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvide
 		let inParentheses = false;
 		let inDoubleQuotes = false;
 		let inSingleQuotes = false;
-		
+
 		for (let i = 0; i < position.character; i++) {
 			const char = fullLineText[i];
 			const prevChar = i > 0 ? fullLineText[i - 1] : '';
-			
+
 			// Check parentheses status (ignore escaped parentheses)
 			if (char === '(' && prevChar !== '\\') {
 				inParentheses = true;
 			} else if (char === ')' && prevChar !== '\\') {
 				inParentheses = false;
 			}
-			
+
 			// Check double quote status (ignore escaped quotes)
 			if (char === '"' && prevChar !== '\\') {
 				inDoubleQuotes = !inDoubleQuotes;
 			}
-			
+
 			// Check single quote status (ignore escaped quotes)
 			if (char === "'" && prevChar !== '\\') {
 				inSingleQuotes = !inSingleQuotes;
 			}
 		}
-		
+
 		// Don't trigger slash commands if inside parentheses or quotes
 		if (inParentheses || inDoubleQuotes || inSingleQuotes) {
 			return Promise.resolve([]);
@@ -338,7 +344,7 @@ class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvide
 		// Create category function
 		const createCategoryItems = (commands: any[], categoryPrefix: string, categoryName: string, startIndex: number) => {
 			const items: vscode.CompletionItem[] = [];
-			
+
 			// Add category title (separator effect)
 			const separator = new vscode.CompletionItem(
 				`────────── ${categoryName} ──────────`,
@@ -350,50 +356,56 @@ class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvide
 			separator.sortText = `${categoryPrefix}000`;
 			separator.command = { command: 'vscode.executeCommand', title: '', arguments: ['hideSuggestWidget'] };
 			items.push(separator);
-			
+
 			// Add command items
 			commands.forEach((cmd, index) => {
 			const item = new vscode.CompletionItem(
-				cmd.label, 
+				cmd.label,
 				cmd.kind || vscode.CompletionItemKind.Function
 			);
-			
+
 			item.detail = cmd.detail;
 			item.documentation = new vscode.MarkdownString(cmd.description);
-			
+
 				if ('command' in cmd && cmd.command) {
-				// If has command, create custom insert text and command
-				item.insertText = '';
-				item.command = {
-					command: cmd.command,
-					title: cmd.label
-				};
-			} else {
-				// If no command, insert text directly
-				if (typeof cmd.insertText === 'string' && cmd.insertText.includes('$')) {
-					item.insertText = new vscode.SnippetString(cmd.insertText);
+				  // Route through tracking helper
+				  item.insertText = '';
+				  item.command = {
+				    command: 'flashMintlify.runCommandAndTrack',
+				    title: cmd.label,
+				    arguments: [cmd.command, labelToFeature(cmd.label)]
+				  };
 				} else {
-					item.insertText = cmd.insertText;
+				  // Insert snippet/text and also fire tracking command
+				  if (typeof cmd.insertText === 'string' && cmd.insertText.includes('$')) {
+				    item.insertText = new vscode.SnippetString(cmd.insertText);
+				  } else {
+				    item.insertText = cmd.insertText;
+				  }
+				  item.command = {
+				    command: 'flashMintlify.trackSelectedFeature',
+				    title: 'track',
+				    arguments: [labelToFeature(cmd.label)]
+				  };
 				}
-			}
-			
+
 				// Sort by code order, same category together
 				const paddedIndex = String(index + 1).padStart(3, '0');
 				item.sortText = `${categoryPrefix}${paddedIndex}`;
-			
+
 			// Remove triggering slash
 			item.additionalTextEdits = [
 				vscode.TextEdit.delete(new vscode.Range(
-					position.line, 
-					position.character - 1, 
-					position.line, 
+					position.line,
+					position.character - 1,
+					position.line,
 					position.character
 				))
 			];
-			
+
 				items.push(item);
 			});
-			
+
 			return items;
 		};
 
@@ -402,7 +414,7 @@ class SlashCommandCompletionItemProvider implements vscode.CompletionItemProvide
 		const basicItems = createCategoryItems(basicCommands, '2', 'Basic', aiCommands.length);
 		const componentItems = createCategoryItems(componentCommands, '3', 'Mintlify Components', aiCommands.length + basicCommands.length);
 		const codeBlockItems = createCategoryItems(codeBlockCommands, '4', 'Code Blocks', aiCommands.length + basicCommands.length + componentCommands.length);
-		
+
 		// Merge all completion items
 		completionItems.push(...aiItems, ...basicItems, ...componentItems, ...codeBlockItems);
 

@@ -9,6 +9,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
+import { Analytics } from '../utils/analytics';
+
 interface ComponentAttribute {
   type: string;
   options?: string[];
@@ -238,18 +240,26 @@ export class PropertySetterPanel {
       let componentText = document.getText(range);
 
       // 批量更新所有属性
+      const originalText = componentText;
       for (const [attrName, attrInfo] of Object.entries(data.attributes)) {
         if (attrInfo.value && attrInfo.value.trim() !== '') {
           componentText = this.updateAttributeInText(componentText, attrName, attrInfo.value, attrInfo.type);
         }
       }
+      const changed = componentText !== originalText;
 
-      // 一次性替换整个组件
-      await targetEditor.edit(editBuilder => {
-        editBuilder.replace(range, componentText);
-      });
+      // 一次性替换整个组件（仅当有实际变化时）
+      if (changed) {
+        await targetEditor.edit(editBuilder => {
+          editBuilder.replace(range, componentText);
+        });
+      }
 
       vscode.window.showInformationMessage(`Saved ${data.componentName} properties`);
+      // 仅在实际写入变更时进行打点
+      if (changed) {
+        try { Analytics.track(`set.component.property.${data.componentName}`); } catch {}
+      }
     } catch (error) {
       vscode.window.showErrorMessage(`Failed to save ${data.componentName} properties: ${error}`);
     }

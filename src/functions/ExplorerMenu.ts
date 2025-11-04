@@ -10,6 +10,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
 
+import { Analytics } from '../utils/analytics';
+
 function getWorkspaceRoot(): string | null {
     return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || null;
 }
@@ -58,6 +60,7 @@ function createMintlifyInternalLink(filePath: string): string {
 
 function createExplorerMenuProviders() {
     const copyMarkdownLinkCommand = vscode.commands.registerCommand('flashMintlify.explorer.copyInternalLink', async (uri: vscode.Uri) => {
+        try { Analytics.track('context.menu.copyInternalLink'); } catch {}
         if (uri && (uri.fsPath.endsWith('.md') || uri.fsPath.endsWith('.mdx'))) {
             try {
                 const internalLink = createMintlifyInternalLink(uri.fsPath);
@@ -72,6 +75,7 @@ function createExplorerMenuProviders() {
     });
 
     const copyImportCommand = vscode.commands.registerCommand('flashMintlify.explorer.copyImport', async (uri: vscode.Uri) => {
+        try { Analytics.track('context.menu.copyImport'); } catch {}
         if (uri && (uri.fsPath.endsWith('.md') || uri.fsPath.endsWith('.mdx'))) {
             try {
                 // 读取文件内容

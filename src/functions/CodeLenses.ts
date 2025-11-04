@@ -7,6 +7,8 @@
  */
 import * as vscode from 'vscode';
 import { createMintlifyComponentCodeLensProvider } from './MintlifyComponentCodeLens';
+import { Analytics } from '../utils/analytics';
+
 
 class HeadingCodeLensProvider implements vscode.CodeLensProvider {
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
@@ -163,6 +165,7 @@ function createCodeLensesProviders(extensionUri?: vscode.Uri) {
 
 	// 生成锚点命令
 	const generateAnchorCommand = vscode.commands.registerCommand('flashMintlify.codelens.generateanchor', async (range: vscode.Range) => {
+		try { Analytics.track('codelens.generateanchor'); } catch {}
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) return;
 		const document = editor.document;
@@ -192,6 +195,7 @@ function createCodeLensesProviders(extensionUri?: vscode.Uri) {
 
 	// 复制锚点命令
 	const copyAnchorCommand = vscode.commands.registerCommand('flashMintlify.codelens.copyanchor', async (range: vscode.Range) => {
+		try { Analytics.track('codelens.copyanchor'); } catch {}
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) return;
 		const document = editor.document;

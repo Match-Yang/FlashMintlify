@@ -23,6 +23,7 @@ import { createInternalLinkProviders } from './functions/ProvidersBootstrap';
 import { createPlaceholderProvider } from './functions/PlaceholderProvider';
 import { PreviewPanel } from './webview/PreviewPanel';
 import { PreviewSettingsPanel } from './webview/PreviewSettingsPanel';
+import { Analytics } from './utils/analytics';
 
 /**
  * Check if the workspace root contains a docs.json file
@@ -52,6 +53,8 @@ async function setMintlifyProjectContext(isMintlifyProject: boolean): Promise<vo
 }
 
 export async function activate(context: vscode.ExtensionContext) {
+  Analytics.init(context, 'FlashMintlify');
+  Analytics.track('activation');
   // Check if the workspace root contains a docs.json file
   const isMintlifyProject = checkDocsJsonExists();
 
@@ -91,10 +94,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Register AI command
   const writeWithAICommand = vscode.commands.registerCommand('flashMintlify.writeWithAI', async () => {
+    Analytics.track('command.writeWithAI');
     vscode.window.showInformationMessage('Coming soon...');
   });
 
   const openPreviewCommand = vscode.commands.registerCommand('flashMintlify.preview.open', async () => {
+    Analytics.track('command.preview.open');
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
       vscode.window.showErrorMessage('No active editor found');
@@ -147,7 +152,17 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   const openPreviewOptionsCommand = vscode.commands.registerCommand('flashMintlify.preview.options', async () => {
+    Analytics.track('command.preview.options');
     PreviewSettingsPanel.createOrShow(context.extensionUri);
+  });
+
+  // Internal tracking helpers for completion items
+  const runCommandAndTrack = vscode.commands.registerCommand('flashMintlify.runCommandAndTrack', async (actualCommand: string, featureName: string) => {
+    try { Analytics.track(featureName); } catch {}
+    if (actualCommand) { try { await vscode.commands.executeCommand(actualCommand); } catch {} }
+  });
+  const trackSelectedFeature = vscode.commands.registerCommand('flashMintlify.trackSelectedFeature', async (featureName: string) => {
+    try { Analytics.track(featureName); } catch {}
   });
 
   context.subscriptions.push(
@@ -162,7 +177,9 @@ export async function activate(context: vscode.ExtensionContext) {
     writeWithAICommand,
     openPreviewCommand,
     openPreviewOptionsCommand,
-    settingChangedListenerProvider
+    settingChangedListenerProvider,
+    runCommandAndTrack,
+    trackSelectedFeature
   );
 
   // bootstrap internal link providers (CodeLens + DocumentLink + StatusBar)
