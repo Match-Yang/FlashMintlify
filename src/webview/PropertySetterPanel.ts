@@ -529,6 +529,24 @@ export class PropertySetterPanel {
             font-size: 1.1em;
             font-weight: 600;
         }
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--vscode-editor-background);
+            border-bottom: 1px solid var(--vscode-panel-border);
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .topbar .buttons {
+            margin-top: 0;
+            padding-left: 0;
+            justify-content: flex-end;
+        }
+
+
         .property-group {
             margin-bottom: 12px;
             padding: 10px;
@@ -647,6 +665,13 @@ export class PropertySetterPanel {
     </style>
 </head>
 <body>
+    <div class="topbar">
+        <div class="buttons">
+            <button class="button button-primary" onclick="saveAttributes()">Save</button>
+            <button class="button button-secondary" onclick="closePanel()">Close</button>
+        </div>
+    </div>
+
     <div class="header">
         <h2>Set Properties for &lt;${componentName}&gt;</h2>
     </div>
@@ -657,10 +682,6 @@ export class PropertySetterPanel {
         ).join('')}
     </div>
 
-    <div class="buttons">
-        <button class="button button-primary" onclick="saveAttributes()">Save</button>
-        <button class="button button-secondary" onclick="closePanel()">Close</button>
-    </div>
 
     <script>
         const vscode = acquireVsCodeApi();

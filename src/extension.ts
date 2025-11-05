@@ -54,7 +54,7 @@ async function setMintlifyProjectContext(isMintlifyProject: boolean): Promise<vo
 
 export async function activate(context: vscode.ExtensionContext) {
   Analytics.init(context, 'FlashMintlify');
-  Analytics.track('activation');
+  // Analytics.track('activation');
   // Check if the workspace root contains a docs.json file
   const isMintlifyProject = checkDocsJsonExists();
 

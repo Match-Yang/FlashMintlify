@@ -28,7 +28,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
 
   private constructor(extensionUri: vscode.Uri) {
     super(extensionUri, 'mintlifyFrontmatterSetter', 'Set page options');
-    
+
     // 获取当前编辑器
     const editor = vscode.window.activeTextEditor;
     if (editor) {
@@ -43,7 +43,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
   private analyzeFrontmatter(editor: vscode.TextEditor) {
     const content = editor.document.getText();
     const hasFrontmatter = content.trim().startsWith('---');
-    
+
     if (hasFrontmatter) {
       // 严谨的frontmatter范围检测
       const lines = content.split('\n');
@@ -147,6 +147,24 @@ export class FrontmatterSetterPanel extends SettingsPanel {
             margin: 0;
             color: var(--vscode-foreground);
         }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--vscode-editor-background);
+            border-bottom: 1px solid var(--vscode-widget-border);
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .topbar .buttons {
+            margin-top: 0;
+            padding-left: 0;
+            justify-content: flex-end;
+        }
+
 
         /* 分组样式 */
         .field-group {
@@ -288,6 +306,13 @@ export class FrontmatterSetterPanel extends SettingsPanel {
     </style>
 </head>
 <body>
+    <div class="topbar">
+        <div class="buttons">
+            <button class="button button-primary" onclick="saveSettings()">Save</button>
+            <button class="button button-secondary" onclick="closePanel()">Close</button>
+        </div>
+    </div>
+
     <div class="header">
         <h2>${this.getTitle()}</h2>
     </div>
@@ -295,16 +320,13 @@ export class FrontmatterSetterPanel extends SettingsPanel {
     <div class="search-container">
         <input type="text" id="field-search" class="property-input" placeholder="🔍 Search fields..."
                oninput="filterFields(this.value)" style="margin-bottom: 15px;">
+
     </div>
 
     <div id="fields">
         ${Object.entries(fieldGroups).map(([groupName, groupFields]) => this.generateGroupHtml(groupName, groupFields)).join('')}
     </div>
 
-    <div class="buttons">
-        <button class="button button-primary" onclick="saveSettings()">Save</button>
-        <button class="button button-secondary" onclick="closePanel()">Close</button>
-    </div>
 
     <script>
         const vscode = acquireVsCodeApi();
@@ -854,7 +876,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
 
       function saveSettings() {
         const data = {};
-        
+
         document.querySelectorAll('.property-group').forEach(group => {
           const fieldName = group.getAttribute('data-field');
           if (fieldName) {
@@ -868,7 +890,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
               } else if (fieldName === 'icon') {
                 fieldType = 'searchable';
               }
-              
+
               data[fieldName] = {
                 value: input.value,
                 type: fieldType
@@ -876,7 +898,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
             }
           }
         });
-        
+
         vscode.postMessage({
           command: 'save',
           data: data
@@ -923,7 +945,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
           case 'iconSearchResults':
             const resultsDiv = document.getElementById('icon-results');
             if (resultsDiv) {
-              resultsDiv.innerHTML = message.icons.map(icon => 
+              resultsDiv.innerHTML = message.icons.map(icon =>
                 \`<div class="icon-item" onclick="selectIcon('\${icon}')">
                   <span class="icon-preview">
                     <i class="fas fa-\${icon}" style="margin-right: 8px; width: 16px; text-align: center;"></i>
@@ -933,7 +955,7 @@ export class FrontmatterSetterPanel extends SettingsPanel {
                   \${icon}
                 </div>\`
               ).join('');
-              
+
               // 检查图标是否存在
               setTimeout(() => {
                 document.querySelectorAll('.icon-item').forEach(item => {
@@ -941,11 +963,11 @@ export class FrontmatterSetterPanel extends SettingsPanel {
                   const fasIcon = icons[0];
                   const fabIcon = icons[1];
                   const farIcon = icons[2];
-                  
+
                   if (fasIcon && getComputedStyle(fasIcon, ':before').content === 'none') {
                     fasIcon.style.display = 'none';
                     fabIcon.style.display = 'inline';
-                    
+
                     setTimeout(() => {
                       if (getComputedStyle(fabIcon, ':before').content === 'none') {
                         fabIcon.style.display = 'none';
